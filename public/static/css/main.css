@@ -408,6 +408,11 @@ footer#main_footer .created {
     background-position: 0px 0px;
 }
 
+.page_contacts i.working-time {
+    background-position: -131px 0px;
+}
+
+
 .page_contacts i.phone {
     background-position: -43px 0px;
     width: 44px;

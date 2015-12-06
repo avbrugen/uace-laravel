@@ -12,6 +12,7 @@
         <div class="col-md-12"><i class="adress"></i>@lang('theme.contacts_wbr')</div>
         <div class="col-md-12 col-lg-6"><i class="phone"></i><b>Номер телефона:</b><div style="padding: 0 0 0 64px">@lang('theme.phone_footer')</div></div>
         <div class="col-md-12 col-lg-6"><i class="email"></i><b>E-mail:</b><br>info@uace.com.ua</div>
+        <div class="col-md-12"><i class="working-time"></i><b>Режим роботи:</b><br>понеділок - п'ятниця 09:00 - 18:00</div>
     </div>
 
 
