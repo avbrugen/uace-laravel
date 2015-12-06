@@ -619,25 +619,54 @@ class AuctionsController extends Controller
     }
 
     /*
-     * Возвращает страницу аукциона (старое)
+     * Возвращает страницу аукциона по ID (старое)
      */
 
-    public function getAuctionPage($id)
-    {
-        //return dd();
+    public function getAuctionPage($id) {
+            try {
+            $auction = Auction::where('id', '=', $id)->firstOrFail();
 
+            // Если аукцион не утвержден его сможет просматривать только администратор
+            if($auction->status == 0) {
+                if(Auth::check()) {
+                    if(Auth::user()->is_admin != 1) {
+                        abort(404);
+                    }
+                } else {
+                    abort(404);
+                }
+            }
+
+        } catch (\Exception $e) {
+            // Если запись не найдена - показываем 404 ошибку
+            abort(404);
+        }
+
+        // Выбираем документы лота
         $documents = Uploads::where(['auction_id' => $id, 'type' => 'doc'])->get();
 
-        $auction = Auction::findOrFail($id);
+        // Текуший курс доллара из настроек
+        $currentUSD = Cache::remember('currentUSD', 10, function() {
+            return Settings::where(['name' => 'usd_cyr'])->first();
+        });
+
+        // Текуший евро доллара из настроек
+        $currentEUR = Cache::remember('currentEUR', 10, function() {
+            return Settings::where(['name' => 'eur_cyr'])->first();
+        });
+
         $haveBidder = 0;
         $Bidder = null;
-        $currentUSD = Settings::where(['name' => 'usd_cyr'])->first();
-        $currentEUR = Settings::where(['name' => 'eur_cyr'])->first();
 
+        // Загружаем участников аукциона
         $Bidder = Auction::with('bidders')->with('curuser')->find($id);
+
+        // Загружаем ставки
         $Bets = Bets::where('auction_id', '=', $id)->orderBy('created_at', 'desc')->get();
 
+        // Если пользователь авторизован
         if(Auth::check()) {
+            // Проверка, является ли текущий пользователь участником
             $BidderCurrent = Bidders::where('user_id', '=', Auth::user()->id)->where('auction_id', '=', $id)->get();
             $haveBidder = $BidderCurrent->count();
         }
