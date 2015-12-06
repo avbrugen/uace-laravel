@@ -223,6 +223,7 @@ print $htmltext;
                     <div class="phone"><i></i>(096) 493-<span>53-35</span><br>(050) 149-<span>53-35</span><br>(093) 922-<span>53-35</span></div>
                     <div class="email"><i></i>E-mail: <a href="/cdn-cgi/l/email-protection#0d64636b624d786c6e68236e626023786c"><span class="__cf_email__" data-cfemail="bed7d0d8d1fecbdfdddb90ddd1d390cbdf">[email&#160;protected]</span><script data-cfhash='f9e31' type="text/javascript">
 /* <![CDATA[ */!function(){try{var t="currentScript"in document?document.currentScript:function(){for(var t=document.getElementsByTagName("script"),e=t.length;e--;)if(t[e].getAttribute("data-cfhash"))return t[e]}();if(t&&t.previousSibling){var e,r,n,i,c=t.previousSibling,a=c.getAttribute("data-cfemail");if(a){for(e="",r=parseInt(a.substr(0,2),16),n=2;a.length-n;n+=2)i=parseInt(a.substr(n,2),16)^r,e+=String.fromCharCode(i);e=document.createTextNode(e),c.parentNode.replaceChild(e,c)}t.parentNode.removeChild(t);}}catch(u){}}()/* ]]> */</script></a></div>
+                    <div class="working-time"><i></i>пн-пт 09.00 - 18.00</div>
                 </div>
             </div>
             <div class="col-xs-3 col-md-3 col_last">
