@@ -191,6 +191,7 @@ class AuctionsController extends Controller
             'date_end.required' => "Поле «Дата завершення аукціону» обов'язково для заповнення.",
             'property_material.required' => 'Ви не вибрали матеріал будівлі.',
             'property_floors.required' => "Поле «Кількість поверхів» обов'язково для заповнення.",
+            'property_floor.required' => "Поле «Поверх» обов'язково для заповнення.",
             'property_areas.required' => "Поле «Кімнат/приміщень» обов'язково для заповнення.",
             'property_totalarea.required' => "Поле «Загальна площа» обов'язково для заповнення.",
             'property_livingarea.required' => "Поле «Житлова площа» обов'язково для заповнення.",
@@ -393,6 +394,7 @@ class AuctionsController extends Controller
             $create->property_material = $request->property_material;
             $create->property_purpose = $request->property_purpose;
             $create->property_floors = $request->property_floors;
+            $create->property_floor = $request->property_floor;
             $create->property_areas = $request->property_areas;
             $create->property_totalarea = $request->property_totalarea;
             $create->property_livingarea = $request->property_livingarea;

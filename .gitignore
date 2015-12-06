@@ -1,4 +1,5 @@
 /bootstrap/compiled.php
+/storage/
 .env.*.php
 .env.php
 .env

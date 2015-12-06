@@ -38,8 +38,15 @@
 
             @if($auction->property_floors)
                 <tr>
-                    <td>Поверховість</td>
+                    <td>Кількість поверхів</td>
                     <td>{{ $auction->property_floors }}</td>
+                </tr>
+            @endif
+
+            @if($auction->property_floor)
+                <tr>
+                    <td>Поверх</td>
+                    <td>{{ $auction->property_floor }}</td>
                 </tr>
             @endif
 

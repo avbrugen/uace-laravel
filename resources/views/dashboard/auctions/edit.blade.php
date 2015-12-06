@@ -115,8 +115,14 @@
         <div class="row">
             <div class="col-xs-3">
                 <div class="form-group @if($errors->has('property_floors'))has-error @endif">
-                    <label for="property_floors">Поверховість</label>
+                    <label for="property_floors">Кількість поверхів</label>
                     <input type="text" name="property_floors" class="form-control input-lg" id="property_floors" value="{{ $auction->property_floors }}">
+                </div>
+            </div>
+            <div class="col-xs-3">
+                <div class="form-group @if($errors->has('property_floor'))has-error @endif">
+                    <label for="property_floors">Поверх</label>
+                    <input type="text" name="property_floor" class="form-control input-lg" id="property_floors" value="{{ $auction->property_floor }}">
                 </div>
             </div>
             <div class="col-xs-3">

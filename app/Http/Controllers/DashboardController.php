@@ -468,6 +468,7 @@ class DashboardController extends Controller
             'date_end.required' => 'Поле «Дата завершення аукціону» обязательно для заполнения.',
             'property_material.required' => 'Вы не выбрали материал здания.',
             'property_floors.required' => 'Поле «Кiлькiсть поверхiв» обязательно для заполнения.',
+            'property_floor.required' => "Поле «Поверх» обов'язково для заповнення.",
             'property_areas.required' => 'Поле «Кiмнат/примiщень» обязательно для заполнения.',
             'property_totalarea.required' => 'Поле «Загальна площа» обязательно для заполнения.',
             'property_livingarea.required' => 'Поле «Житлова площа» обязательно для заполнения.',
@@ -775,6 +776,7 @@ class DashboardController extends Controller
             $create->property_material = $request->property_material;
             $create->property_purpose = $request->property_purpose;
             $create->property_floors = $request->property_floors;
+            $create->property_floor = $request->property_floor;
             $create->property_areas = $request->property_areas;
             $create->property_totalarea = $request->property_totalarea;
             $create->property_livingarea = $request->property_livingarea;
