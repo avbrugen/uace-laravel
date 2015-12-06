@@ -1,0 +1,46 @@
+<?php foreach($auctions as $auction): ?>
+<div class="auction_item clearfix">
+    <div class="col-xs-4"><img src="<?php echo e($auction->img_min); ?>" alt="<?php echo e($auction->title); ?>" class="img-responsive"></div>
+    <div class="col-xs-8">
+        <h2><a href="<?php echo e(action('AuctionsController@getAuctionPageBySlug', ['id' => $auction->id, 'slug' => $auction->slug])); ?>"><?php echo e($auction->title); ?></a></h2>
+        <div class="row auction_info">
+            <div class="col-xs-7">
+                <p><i class="icon icon-1"></i>Регіон: <b><?php echo e(trans('theme.regions.'.$auction->region)); ?></b></p>
+                <p><i class="icon icon-2"></i>Номер лоту: <b><?php echo e($auction->id); ?></b></p>
+                <?php if(!$auction->free_sale): ?><p><i class="icon icon-3"></i>Гарантійний внесок: <b><?php echo e($auction->guarantee_fee); ?> <?php echo e(trans('theme.currency.'.$auction->currency)); ?></b></p><?php endif; ?>
+                <?php if(!$auction->free_sale): ?><p><i class="icon icon-4"></i>Стан аукціону: <b><?php echo e(trans('theme.statuses.'.$auction->status)); ?></b></p><?php endif; ?>
+                <div class="buttons" style="padding-top: 10px">
+                    <a href="<?php echo e(action('AuctionsController@getAuctionPageBySlug', ['id' => $auction->id, 'slug' => $auction->slug])); ?>" class="btn btn-primary">Переглянути лот</a>
+                    <?php if($auction->status == 2): ?><a href="<?php echo e(action('BiddersController@getAddBidder', ['id' => $auction->id])); ?>" class="btn btn-warning">Подати заявку</a><?php endif; ?>
+                    <?php /* Проверка, имеет ли аукцион статус "Відбуваються торги" */ ?>
+                    <?php if($auction->status == 3): ?>
+
+                        <?php if(!Auth::check()): ?>
+                            <?php /* Если пользователь не авторизован, при нажатии открываем окно для входа */ ?>
+                            <a href="#" data-toggle="modal" data-target="#LoginModal" class="btn btn-warning">Зробити ставку</a>
+                        <?php else: ?>
+                            <?php
+                            // Запрос к списку участников (проверка, имеет ли текущий авторизованных пользователь статус Допущен до аукциона)
+                            // Вовзращает: 1 - если текущий пользователь успешно допущен (его заявка одобрена администрацией)
+                            // или 0 - если заявка не допущена или пользователь не подавал её вовсе
+                            $ee = \App\Bidders::where(['user_id' => Auth::user()->id, 'auction_id' => $auction->id, 'status' => 1])->get();
+                            ?>
+
+                            <?php if($ee->count() == 1): ?>
+                                <a href="#" class="btn btn-warning" data-toggle="modal" data-target="#doBet">Зробити ставку</a>
+                            <?php endif; ?>
+
+                        <?php endif; ?><?php /* Auth::check */ ?>
+
+                    <?php endif; ?><?php /* $auction->status == 3 */ ?>
+                </div>
+            </div>
+            <div class="col-xs-5">
+                <p class="b"><i class="icon icon-5"></i>Стартова ціна:</p>
+                <p class="price"><span><?php echo e(number_format($auction->starting_price, 2, ',', ' ')); ?> <?php echo e(trans('theme.currency.'.$auction->currency)); ?> </span></p>
+                <?php if(!$auction->free_sale): ?><p class="date_start"><span><i class="icon icon-6"></i>Дата аукціону:</span><b><?php echo e(Carbon\Carbon::parse($auction->data_start)->format('d.m.Y в H:i')); ?></b></p><?php endif; ?>
+            </div>
+        </div>
+    </div>
+</div>
+<?php endforeach; ?>

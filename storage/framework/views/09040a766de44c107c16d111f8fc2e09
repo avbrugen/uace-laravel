@@ -1,0 +1,15 @@
+<h2>Аукціон №<?php echo e($auction_id); ?> завершено</h2>
+
+<p>Аукцион «<a href="<?php echo e(action('AuctionsController@getAuctionPage', ['id' => $auction_id])); ?>"><?php echo e($auction_title); ?></a>» завершен.</p>
+<?php if($auction_status == 7): ?>
+    <h4>Победитель аукциона</h4>
+    <p>И.Ф.О.: <?php echo e($win_last_name); ?> <?php echo e($win_first_name); ?> <?php echo e($win_middle_name); ?><br>
+        Email: <?php echo e($win_email); ?><br>
+        Телефон: <?php echo e($win_phone); ?><br>
+        Сума: <?php echo e(number_format($win_cost, 2, ',', ' ')); ?> грн.
+    </p>
+<?php endif; ?>
+
+<?php if($auction_status == 8): ?>
+    <p>К сожалению, не было зафиксировано ни одной ставки. Аукцион завершается со статусом «<?php echo e(trans('theme.statuses.8')); ?>».</p>
+<?php endif; ?>

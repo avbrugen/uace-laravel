@@ -1,0 +1,226 @@
+<form action="/auction/search" id="search" method="get">
+
+    <div class="form-group">
+        <label>Категорія:</label>
+        <select class="form-control" name="category">
+            <option value>Всі</option>
+            <?php foreach($categories as $category): ?>
+                <option <?php if($currentCategory && $category->id == $currentCategory->id): ?>selected <?php endif; ?> value="<?php echo e($category->id); ?>"><?php echo e($category->name); ?></option>
+            <?php endforeach; ?>
+        </select>
+    </div>
+
+<?php if($currentCategory && $currentCategory->getDescendants()->count() > 0): ?>
+    <div class="form-group">
+        <label>Тип:</label>
+        <select class="form-control" name="lot_type">
+            <option value>Всі</option>
+            <?php foreach($currentCategory->getDescendants() as $type): ?>
+                <option <?php if($request && $request->lot_type == $type->id): ?>selected <?php endif; ?> value="<?php echo e($type->id); ?>"><?php echo e($type->name); ?></option>
+            <?php endforeach; ?>
+        </select>
+    </div>
+    <?php endif; ?>
+
+    <div class="form-group">
+        <label>Стан аукціону:</label>
+        <select class="form-control" name="status">
+            <option value>Не обрано</option>
+            <?php foreach(trans('theme.statuses_front') as $key => $status): ?>
+                <option <?php if($request && $request->status == $key): ?>selected <?php endif; ?> value="<?php echo e($key); ?>"><?php echo e($status); ?></option>
+            <?php endforeach; ?>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label>Ціна лота, грн</label>
+        <div class="row row-min">
+            <div class="col-xs-6">
+                <input type="number" <?php if($request && $request->price_from): ?>value="<?php echo e($request->price_from); ?>"<?php endif; ?> class="form-control no-spin-button" name="price_from" placeholder="Від">
+            </div>
+            <div class="col-xs-6">
+                <input type="number" <?php if($request && $request->price_to): ?>value="<?php echo e($request->price_to); ?>"<?php endif; ?> class="form-control no-spin-button" name="price_to" placeholder="До">
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Дата проведення аукціону:</label>
+        <div class="row row-min">
+            <div class="col-xs-6">
+                <input type="date" <?php if($request && $request->date_start): ?>value="<?php echo e($request->date_start); ?>"<?php endif; ?> class="form-control no-spin-button" name="date_start" placeholder="Від">
+            </div>
+            <div class="col-xs-6">
+                <input type="date" <?php if($request && $request->date_end): ?>value="<?php echo e($request->date_end); ?>"<?php endif; ?> class="form-control no-spin-button" name="date_end" placeholder="До">
+            </div>
+        </div>
+    </div>
+
+<?php if($currentCategory && $currentCategory->id == 1): ?>
+    <hr>
+        <div class="form-group">
+            <label>Матеріал будівлі</label>
+            <select class="form-control" name="property_material">
+                <option value>Всі</option>
+                <?php foreach(trans('theme.property_material') as $val => $property_material): ?>
+                    <option value="<?php echo e($val); ?>" <?php if($request && $request->property_material == $val): ?> selected <?php endif; ?>><?php echo e($property_material); ?></option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Кiлькiсть поверхiв</label>
+            <div class="row row-min">
+                <div class="col-xs-6">
+                    <input type="number" <?php if($request && $request->property_floors_from): ?>value="<?php echo e($request->property_floors_from); ?>"<?php endif; ?> class="form-control no-spin-button"  name="property_floors_from" placeholder="Від">
+                </div>
+                <div class="col-xs-6">
+                    <input type="number" <?php if($request && $request->property_floors_to): ?>value="<?php echo e($request->property_floors_to); ?>"<?php endif; ?> class="form-control no-spin-button" name="property_floors_to" placeholder="До">
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Кiмнат/примiщень</label>
+            <div class="row row-min">
+                <div class="col-xs-6">
+                    <input type="number" <?php if($request && $request->property_areas_from): ?>value="<?php echo e($request->property_areas_from); ?>"<?php endif; ?> class="form-control no-spin-button"  name="property_areas_from" placeholder="Від">
+                </div>
+                <div class="col-xs-6">
+                    <input type="number" <?php if($request && $request->property_areas_to): ?>value="<?php echo e($request->property_areas_to); ?>"<?php endif; ?> class="form-control no-spin-button" name="property_areas_to" placeholder="До">
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Загальна площа</label>
+            <div class="row row-min">
+                <div class="col-xs-6">
+                    <input type="number" <?php if($request && $request->property_totalarea_from): ?>value="<?php echo e($request->property_totalarea_from); ?>"<?php endif; ?> class="form-control no-spin-button"  name="property_totalarea_from" placeholder="Від">
+                </div>
+                <div class="col-xs-6">
+                    <input type="number" <?php if($request && $request->property_totalarea_to): ?>value="<?php echo e($request->property_totalarea_to); ?>"<?php endif; ?> class="form-control no-spin-button" name="property_totalarea_to" placeholder="До">
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Житлова площа</label>
+            <div class="row row-min">
+                <div class="col-xs-6">
+                    <input type="number" <?php if($request && $request->property_livingarea_from): ?>value="<?php echo e($request->property_livingarea_from); ?>"<?php endif; ?> class="form-control no-spin-button"  name="property_livingarea_from" placeholder="Від">
+                </div>
+                <div class="col-xs-6">
+                    <input type="number" <?php if($request && $request->property_livingarea_to): ?>value="<?php echo e($request->property_livingarea_to); ?>"<?php endif; ?> class="form-control no-spin-button" name="property_livingarea_to" placeholder="До">
+                </div>
+            </div>
+        </div>
+
+    <hr>
+<?php endif; ?>
+
+<?php if($currentCategory && $currentCategory->id == 4): ?>
+        <hr>
+        <div class="form-group">
+            <label for="auto_mark">Марка</label>
+            <select class="form-control" name="auto_mark">
+                <option value>Не обрано</option>
+                <?php foreach(trans('theme.auto_mark') as $k => $auto_mark): ?>
+                    <option value="<?php echo e($k); ?>" <?php if($request && $request->auto_mark == $k): ?> selected <?php endif; ?>><?php echo e($auto_mark); ?></option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Модель</label>
+            <input type="text" name="auto_model" <?php if($request && $request->auto_model): ?>value="<?php echo e($request->auto_model); ?>"<?php endif; ?> class="form-control">
+        </div>
+
+        <div class="form-group">
+            <label>Pік випуску</label>
+            <div class="row row-min">
+                <div class="col-xs-6">
+                    <input type="number" <?php if($request && $request->auto_year_from): ?>value="<?php echo e($request->auto_year_from); ?>"<?php endif; ?> class="form-control no-spin-button"  name="auto_year_from" placeholder="З">
+                </div>
+                <div class="col-xs-6">
+                    <input type="number" <?php if($request && $request->auto_year_to): ?>value="<?php echo e($request->auto_year_to); ?>"<?php endif; ?> class="form-control no-spin-button" name="auto_year_to" placeholder="По">
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Коробка передач</label>
+            <select class="form-control" name="auto_transmission">
+                <option value="">Не обрано</option>
+                <?php foreach(trans('theme.auto_transmission') as $k => $auto_transmission): ?>
+                    <option value="<?php echo e($k); ?>" <?php if($request && $request->auto_transmission == $k): ?> selected <?php endif; ?>><?php echo e($auto_transmission); ?></option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Тип привода</label>
+            <select class="form-control" name="auto_drive">
+                <option value>Не обрано</option>
+                <?php foreach(trans('theme.auto_drive') as $k => $auto_drive): ?>
+                    <option value="<?php echo e($k); ?>" <?php if($request && $request->auto_drive == $k): ?> selected <?php endif; ?>><?php echo e($auto_drive); ?></option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="auto_fuel">Тип пального</label>
+            <select class="form-control" name="auto_fuel">
+                <option value>Не обрано</option>
+                <?php foreach(trans('theme.auto_fuel') as $k => $auto_fuel): ?>
+                    <option value="<?php echo e($k); ?>" <?php if($request && $request->auto_fuel == $k): ?> selected <?php endif; ?>><?php echo e($auto_fuel); ?></option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="auto_doors">Кількість дверей</label>
+            <select class="form-control" name="auto_doors">
+                <option value>Не обрано</option>
+                <option value="2" <?php if($request && $request->auto_doors == 2): ?> selected <?php endif; ?>>2</option>
+                <option value="3" <?php if($request && $request->auto_doors == 3): ?> selected <?php endif; ?>>3</option>
+                <option value="4" <?php if($request && $request->auto_doors == 4): ?> selected <?php endif; ?>>4</option>
+                <option value="5" <?php if($request && $request->auto_doors == 5): ?> selected <?php endif; ?>>5</option>
+            </select>
+        </div>
+
+
+        <hr>
+<?php endif; ?>
+
+    <div class="form-group">
+        <label for="region">Область</label>
+        <select class="form-control" name="region">
+            <option value>Всі</option>
+            <?php foreach(trans('theme.regions') as $key => $region): ?>
+                <option value="<?php echo e($key); ?>" <?php if($request && $request->region == $key): ?> selected <?php endif; ?>><?php echo e($region); ?></option>
+            <?php endforeach; ?>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="city">Місто</label>
+        <input type="text" name="city" <?php if($request && $request->city): ?>value="<?php echo e($request->city); ?>"<?php endif; ?> class="form-control">
+    </div>
+
+    <button type="submit" class="btn btn-warning btn-lg">Показати результати</button>
+
+</form>
+
+<style>
+    hr {
+        border-top: 1px solid #DBDAD5;
+    }
+
+    .no-spin-button {
+        -moz-appearance: textfield;
+    }
+    .no-spin-button::-webkit-inner-spin-button {
+        display: none;
+    }
+</style>

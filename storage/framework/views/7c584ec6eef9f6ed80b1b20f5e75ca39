@@ -1,0 +1,11 @@
+<?php $__env->startSection('title'); ?><?php echo e($post->title); ?> - <?php echo e(trans('theme.news_categories.'.$post->category)); ?> - <?php echo app('translator')->get('theme.sitename_title'); ?><?php $__env->stopSection(); ?>
+
+<?php $__env->startSection('content'); ?>
+        <div id="article" class="post post-<?php echo e($post->id); ?>">
+            <h2><a href="<?php echo e(action('NewsController@getArticle', ['slug' => $post->slug])); ?>"><?php echo e($post->title); ?></a></h2>
+			<p style="color: #949494"><?php echo e(Carbon\Carbon::parse($post->date_publish)->format('d.m.Y H:i')); ?></p>
+            <?php if($post->preview): ?><div class="image"><img src="<?php echo e($post->preview); ?>" alt="<?php echo e($post->title); ?>"></div><?php endif; ?>
+            <div class="content"><?php echo $post->container; ?></div>
+        </div>
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layouts', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

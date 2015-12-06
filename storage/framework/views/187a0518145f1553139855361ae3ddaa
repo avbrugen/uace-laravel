@@ -1,0 +1,100 @@
+
+<?php $__env->startSection('title'); ?><?php echo e($currentCategory->name); ?> - Система електронних торгів - <?php echo app('translator')->get('theme.sitename_title'); ?><?php $__env->stopSection(); ?>
+
+<?php $__env->startSection('content'); ?>
+
+    <?php echo $__env->make('auction.categories.list', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+
+    <div class="container">
+
+        <div class="search_note">Для більш швидкого вибору скористайтеся пошуком</div>
+
+        <div class="auction_main row">
+            <div class="hidden-sm hidden-xs col-md-3">
+<?php echo $__env->make('auction.categories.filters', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+                <?php echo $__env->make('auction.widget-lastlots', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+            </div>
+            <div class="col-xs-12 col-md-9">
+                <div class="row search_by_title row-min">
+                    <div class="col-xs-5">
+                        <div class="input">
+                            <input type="text" class="form-control" form="search" name="title" placeholder="Пошук за найменуванням">
+                        </div>
+                    </div>
+                    <div class="col-xs-5">
+                        <div class="input">
+                            <select class="form-control" name="region" form="search">
+                                <option value>Область</option>
+                                <?php foreach(trans('theme.regions') as $key => $region): ?>
+                                    <option value="<?php echo e($key); ?>" <?php if($request && $request->region == $key): ?> selected <?php endif; ?>><?php echo e($region); ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-xs-1">
+                        <button type="submit" form="search" class="btn btn-warning btn-lg"><i class="glyphicon glyphicon-search"></i></button>
+                    </div>
+                </div>
+
+                <div id="auctions">
+                    <div class="row">
+
+<form action class="form-horizontal clearfix sortBy">
+
+            <div class="col-xs-12 col-sm-6">
+            <div class="form-group">
+                <label class="col-xs-12 col-md-6 col-lg-5">Відображати по:</label>
+            <div class="col-xs-12 col-md-6 col-lg-7">
+                                        <select class="form-control" name="items_per_page" form="search" onchange="this.form.submit()">
+                                            <option value="10" <?php if($request && $request->items_per_page == 10): ?> selected <?php endif; ?>>10</option>
+                                            <option value="25" <?php if($request && $request->items_per_page == 25): ?> selected <?php endif; ?>>25</option>
+                                            <option value="50" <?php if($request && $request->items_per_page == 50): ?> selected <?php endif; ?>>50</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-xs-12 col-sm-6">
+            <div class="form-group">
+                <label class="col-md-4 col-xs-12 col-lg-3 two">Сортувати:</label>
+                <div class="col-md-8 col-xs-12 col-lg-9">
+                                        <select class="form-control" name="sortBy" form="search" onchange="this.form.submit()">
+                                            <option value="new" <?php if(isset($request) && $request->sortBy == 'new'): ?> selected <?php endif; ?>>Від нових до старих</option>
+                                            <option value="lowcost" <?php if(isset($request) && $request->sortBy == 'lowcost'): ?> selected <?php endif; ?>>Від найдешевших до найдорожчих</option>
+                                            <option value="topcost" <?php if(isset($request) && $request->sortBy == 'topcost'): ?> selected <?php endif; ?>>Від найдорожчих до найдешевших</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <?php if($auctions->count() > 0): ?>
+
+                            <?php /* Выводим цикл лотов */ ?>
+                            <?php echo $__env->make('auction.lots.item', ['auctions' => $auctions], array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+
+                                <div class="clearfix">
+                                    <?php echo $auctions->appends($_GET)->render(); ?>
+
+                                    <?php if($request && $request->items_per_page  > $auctions->count() ): ?>
+                                        Аукціони з <?php echo e($auctions->currentPage() *  $auctions->perPage() - $auctions->perPage() + 1); ?> по <?php echo e($auctions->currentPage() *  $auctions->perPage()); ?> із <?php echo e($auctions->total()); ?> аукціонів
+                                    <?php elseif($auctions->total() > 10): ?>
+                                        Аукціони з <?php echo e($auctions->currentPage() *  $auctions->perPage() - $auctions->perPage() + 1); ?> по <?php echo e($auctions->currentPage() *  $auctions->perPage()); ?> із <?php echo e($auctions->total()); ?> аукціонів
+                                    <?php else: ?>
+                                        Аукціони з <?php echo e($auctions->currentPage() *  $auctions->perPage() - $auctions->perPage() + 1); ?> по <?php echo e($auctions->total()); ?> із <?php echo e($auctions->total()); ?> аукціонів
+                                    <?php endif; ?>
+
+                                </div>
+                        <?php else: ?>
+                            Пошук не дав результатів
+                        <?php endif; ?>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('auction.layout', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

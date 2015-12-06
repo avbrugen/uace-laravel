@@ -1,0 +1,46 @@
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <h4 class="modal-title" id="myModalLabel">Перейменувати файл</h4>
+</div>
+<form id="RenameFile">
+    <div class="modal-body">
+        <div class="ajaxstatus"></div>
+
+        {!! csrf_field() !!}
+
+        <div class="form-group">
+            <label>Назва</label>
+            <input type="text" class="form-control" name="name" value="{{ $file->name }}">
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Закрити</button>
+        <button type="button" class="send_new_fields btn btn-primary" data-loading-text="Оновлюємо дані...">Перейменувати</button>
+    </div>
+</form>
+
+<script>
+    $('.send_new_fields').on('click', function(e){
+        //var form = $('#CategoryEdit');
+        var data = new FormData($('#RenameFile')[0]);
+
+        var _button = $(this);
+        _button.button('loading');
+        $.ajax({
+            url: '{{ action('DashboardController@postRenameFile', ['id' => $file->id]) }}',             // указываем URL и
+            type: 'POST',
+            dataType: "json",                     // тип загружаемых данных
+            data: data,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function (data, textStatus) { // вешаем свой обработчик на функцию success
+                console.log(data);
+                $('.ajaxstatus').html('<div class="alert alert-success">' + data.responseText + '</div>');
+                $('#file-{{ $file->id }}-name').text(data.newFileName);
+                _button.button('reset');
+            }
+        });
+    })
+</script>

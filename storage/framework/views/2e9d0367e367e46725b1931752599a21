@@ -1,0 +1,89 @@
+
+<?php $__env->startSection('title'); ?>Система електронних торгів - <?php echo app('translator')->get('theme.sitename_title'); ?><?php $__env->stopSection(); ?>
+
+<?php $__env->startSection('content'); ?>
+
+    <?php echo $__env->make('auction.categories.list', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+
+    <div class="container">
+
+        <div class="search_note">Для більш швидкого вибору скористайтеся пошуком</div>
+
+        <div class="auction_main row">
+            <div class="hidden-sm hidden-xs col-md-3">
+                <?php echo $__env->make('auction.categories.filters', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+                <?php echo $__env->make('auction.widget-lastlots', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+            </div>
+            <div class="col-xs-12 col-md-9">
+
+
+<div id="auctions">
+    <div class="row">
+
+<ul>
+    <li><a href="/">Головна</a></li>
+    <?php foreach($pages as $page): ?>
+    <li><a href="<?php echo e(action('PageController@getPage', ['slug' => $page->slug])); ?>"><?php echo e($page->title); ?></a></li>
+    <?php endforeach; ?>
+</ul>
+
+<ul>
+    <li><a href="#" class="open_sp" data-target="#sp_news">Новини</a>
+        <ul id="sp_news" class="hidden">
+           <?php foreach($news as $post): ?>
+            <li><a href="<?php echo e(action('NewsController@getArticle', ['slug' => $post->slug])); ?>"><?php echo e($post->title); ?></a></li>
+            <?php endforeach; ?>
+        </ul>
+    </li>
+</ul>
+   
+<ul>
+    <li><a href="#" class="open_sp" data-target="#sp_ogoloshenia">Оголошення</a>
+        <ul id="sp_ogoloshenia" class="hidden">
+           <?php foreach($ogoloshenia as $post): ?>
+            <li><a href="<?php echo e(action('NewsController@getArticle', ['slug' => $post->slug])); ?>"><?php echo e($post->title); ?></a></li>
+            <?php endforeach; ?>
+        </ul>
+    </li>
+</ul>
+
+
+<ul>
+    <li><a href="/auctions">Система електронних торгів</a>
+        <ul>
+           <?php foreach($categories as $category): ?>
+            <li><a href="<?php echo e(action('CategoriesController@index', ['id' => $category->id])); ?>"><?php echo e($category->name); ?></a>
+                <ul>
+                    <? $auctions = App\Auction::where('category', '=', $category->id)->where('status', '>', 0)->get(); ?>
+                    <?php foreach($auctions as $auction): ?>
+                        <li><a href="<?php echo e(action('AuctionsController@getAuctionPageBySlug', ['id' => $auction->id, 'slug' => $auction->slug])); ?>"><?php echo e($auction->title); ?></a></li>
+                    <?php endforeach; ?>
+                </ul>
+            </li>
+            <?php endforeach; ?>
+        </ul>
+    </li>
+</ul>
+
+    </div>
+</div>
+
+            </div>
+        </div>
+
+    </div>
+    
+<script>
+$('.open_sp').on('click', function() {
+    sp = $(this).data('target');
+    if($(sp).hasClass('hidden')) {
+        $(sp).removeClass('hidden');
+    } else {
+        $(sp).addClass('hidden');
+    }
+    return false;
+});
+</script>
+
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('auction.layout', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

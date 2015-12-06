@@ -1,0 +1,8 @@
+<h2>Вітаємо, <?php echo e($first_name); ?> <?php echo e($last_name); ?>!</h2>
+<p>Адміністрація змінила статус Вашої заявки на участь в аукціоні №<?php echo e($auction_id); ?>.</p>
+<p><b>Інформація про заявку</b></p>
+<p>
+    Назва лоту: <a href="<?php echo e(action('AuctionsController@getAuctionPage', ['id' => $auction_id])); ?>"><?php echo e($auction_title); ?></a><br/>
+    Дата початку аукціону: <?php echo e($auction_start); ?><br/>
+    Статус заявки на участь: <b><?php echo e($new_status); ?></b>
+</p>

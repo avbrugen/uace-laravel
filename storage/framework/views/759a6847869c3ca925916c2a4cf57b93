@@ -1,0 +1,24 @@
+<?php if($bets->count() > 0): ?>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>ID учасника</th>
+            <th>Дата ставки</th>
+            <th>Цена</th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php foreach($bets as $bet): ?>
+            <tr>
+                <td><?php if(Auth::check() && Auth::user()->id == $bet->user_id): ?>
+                    <span style="color: green;"><?php if(Auth::user()->legal_entity): ?> <?php echo e(Auth::user()->legal_entity); ?> <?php else: ?> <?php echo e(Auth::user()->first_name); ?> <?php echo e(Auth::user()->last_name); ?> <?php endif; ?></span>
+                <?php else: ?> <span style="color: #ec971f;">Учасник №<?php echo e($bet->user_id); ?></span><?php endif; ?></td>
+                <td><?php echo e($bet->created_at); ?></td>
+                <td><?php echo e(number_format($bet->bet, 2, ',', ' ')); ?> <?php echo e(trans('theme.currency.'.$currency)); ?> </td>
+            </tr>
+        <?php endforeach; ?>
+        </tbody>
+    </table>
+<?php else: ?>
+    Пропозицій ще не надходило
+<?php endif; ?>

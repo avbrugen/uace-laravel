@@ -1,0 +1,22 @@
+<?php $__env->startSection('title'); ?>Подати оголошення - <?php echo app('translator')->get('theme.sitename_title'); ?><?php $__env->stopSection(); ?>
+
+<?php $__env->startSection('head'); ?>
+    <script src="/static/js/dropzone.js"></script>
+    <script src="/static/js/moment-with-locales.min.js"></script>
+    <script src="/static/js/bootstrap-datetimepicker.min.js"></script>
+    <link rel="stylesheet" href="/static/css/dropzone.css">
+    <link rel="stylesheet" href="/static/css/bootstrap-datetimepicker.min.css">
+
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('content'); ?>
+    <div class="container">
+
+        <?php
+        $activeCategory = Session::get('activeCategory');
+        ?>
+
+    <?php echo $__env->make('auction.lots.addform', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+
+    </div>
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('auction.layout', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

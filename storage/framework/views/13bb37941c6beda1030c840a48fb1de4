@@ -1,0 +1,43 @@
+<div class="row">
+    <div class="col-xs-3">
+        <div class="form-group <?php if($errors->has('build_materials_col')): ?>has-error <?php endif; ?>">
+            <label>Кількість тис. шт.</label>
+            <input type="number" name="build_materials_col" class="form-control" <?php if($auction): ?>value="<?php echo e($auction->build_materials_col); ?>"<?php endif; ?>>
+        </div>
+    </div>
+
+    <div class="col-xs-3">
+        <div class="form-group <?php if($errors->has('build_materials_weight')): ?>has-error <?php endif; ?>">
+            <label>Маса, кг</label>
+            <input type="number" name="build_materials_weight" class="form-control" <?php if($auction): ?>value="<?php echo e($auction->build_materials_weight); ?>"<?php endif; ?>>
+        </div>
+    </div>
+
+    <div class="col-xs-3">
+        <div class="form-group <?php if($errors->has('build_materials_volume')): ?>has-error <?php endif; ?>">
+            <label>Об'єм, м<sup>3</sup></label>
+            <input type="number" name="build_materials_volume" class="form-control" <?php if($auction): ?>value="<?php echo e($auction->build_materials_volume); ?>"<?php endif; ?>>
+        </div>
+    </div>
+
+    <div class="col-xs-3">
+        <div class="form-group <?php if($errors->has('build_materials_width')): ?>has-error <?php endif; ?>">
+            <label>Ширина</label>
+            <input type="number" name="build_materials_width" class="form-control" <?php if($auction): ?>value="<?php echo e($auction->build_materials_width); ?>"<?php endif; ?>>
+        </div>
+    </div>
+
+    <div class="col-xs-3">
+        <div class="form-group <?php if($errors->has('lot_DebtorName')): ?>has-error <?php endif; ?>">
+            <label>ПІБ боржника/Назва</label>
+            <input type="number" name="lot_DebtorName" class="form-control" <?php if($auction): ?>value="<?php echo e($auction->lot_DebtorName); ?>"<?php endif; ?>>
+        </div>
+    </div>
+
+    <div class="col-xs-3">
+        <div class="form-group <?php if($errors->has('lot_EDRPOU')): ?>has-error <?php endif; ?>">
+            <label>ЄДРПОУ</label>
+            <input type="number" name="lot_EDRPOU" class="form-control" <?php if($auction): ?>value="<?php echo e($auction->lot_EDRPOU); ?>"<?php endif; ?>>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,12 @@
+<?php $__env->startSection('title'); ?>Оголошення - <?php echo app('translator')->get('theme.sitename_title'); ?><?php $__env->stopSection(); ?>
+
+<?php $__env->startSection('content'); ?>
+    <?php foreach($articles as $post): ?>
+        <div id="article" class="post post-<?php echo e($post->id); ?>">
+            <h2><a href="<?php echo e(action('NewsController@getArticle', ['slug' => $post->slug])); ?>"><?php echo e($post->title); ?></a></h2>
+            <?php if($post->preview): ?><div class="image"><img src="<?php echo e($post->preview); ?>" alt="<?php echo e($post->title); ?>"></div><?php endif; ?>
+            <p><?php echo e($post->anonce); ?></p>
+        </div>
+    <?php endforeach; ?>
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layouts', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

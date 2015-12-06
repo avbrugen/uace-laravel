@@ -1,0 +1,8 @@
+<?php if($categories->count() > 0): ?>
+    <label for="lot_type">Тип <span class="label-required">*</span></label>
+<select class="form-control input-lg" name="lot_type">
+    <?php foreach($categories as $category): ?>
+    <option value="<?php echo e($category->id); ?>"><?php echo e($category->name); ?></option>
+<?php endforeach; ?>
+</select>
+<?php endif; ?>

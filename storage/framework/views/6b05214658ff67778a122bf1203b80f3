@@ -1,0 +1,59 @@
+
+<?php $__env->startSection('title'); ?>Зміна даних - <?php echo app('translator')->get('theme.sitename_title'); ?><?php $__env->stopSection(); ?>
+
+<?php $__env->startSection('content'); ?>
+    <div class="container">
+        <div class="auction_page_title">Зміна даних</div>
+
+        <div class="register_container">
+
+            <form id="update_form" role="form" method="POST" action="/auctions/profile/edit">
+
+                <input type="hidden" name="personGroup" value="1">
+                <div class="form-group <?php if($errors->has('LastName') && $group == 1): ?>has-error <?php endif; ?>">
+                    <label for="InputLastName">Ваше прізвище</label>
+                    <input type="text" name="LastName" class="form-control input-lg" id="InputLastName" value="<?php echo e($current->last_name); ?>" placeholder="Іванов">
+                    <?php if($errors->has('LastName') && $group == 1): ?><p class="text-danger"><?php echo e($errors->first('LastName')); ?></p><?php endif; ?>
+                </div>
+                <div class="form-group <?php if($errors->has('FirstName') && $group == 1): ?>has-error <?php endif; ?>">
+                    <label for="InputFirstName">Ваше ім'я</label>
+                    <input type="text" name="FirstName" class="form-control input-lg" id="InputFirstName" value="<?php echo e($current->first_name); ?>" placeholder="Іван">
+                    <?php if($errors->has('FirstName') && $group == 1): ?><p class="text-danger"><?php echo e($errors->first('FirstName')); ?></p><?php endif; ?>
+                </div>
+                <div class="form-group <?php if($errors->has('MiddleName') && $group == 1): ?>has-error <?php endif; ?>">
+                    <label for="InputMiddleName">Ваше по-батькові</label>
+                    <input type="text" name="MiddleName" class="form-control input-lg" id="InputMiddleName" value="<?php echo e($current->middle_name); ?>" placeholder="Іванович">
+                    <?php if($errors->has('MiddleName') && $group == 1): ?><p class="text-danger"><?php echo e($errors->first('MiddleName')); ?></p><?php endif; ?>
+                </div>
+                <!--<div class="form-group <?php if($errors->has('email') && $group == 1): ?>has-error <?php endif; ?>">
+                    <label for="InputEmail">E-mail</label>
+                    <input type="email" name="email" value="<?php echo e(old('email')); ?>" class="form-control input-lg" id="InputEmail" placeholder="ivan@yandex.ua">
+                    <p class="help-block">Ваш E-mail буде використовуватися в якості логіна для входу в систему.</p>
+                    <?php if($errors->has('email') && $group == 1): ?><p class="text-danger"><?php echo e($errors->first('email')); ?></p><?php endif; ?>
+                </div>-->
+                <div class="form-group <?php if($errors->has('phone') && $group == 1): ?>has-error <?php endif; ?>">
+                    <label for="InputPhone">Ваш номер телефону</label>
+                    <input type="text" name="phone" class="form-control input-lg" id="InputPhone" value="<?php echo e($current->phone); ?>" placeholder="+38099-999-99-99">
+                    <?php if($errors->has('phone') && $group == 1): ?><p class="text-danger"><?php echo e($errors->first('phone')); ?></p><?php endif; ?>
+                </div>
+                <!--<div class="form-group  <?php if($errors->has('password') && $group == 1): ?>has-error <?php endif; ?>">
+                    <label for="InputPassword">Введіть пароль</label>
+                    <input type="password" name="password" class="form-control input-lg" id="InputPassword" placeholder="••••••••••••">
+                    <?php if($errors->has('password') && $group == 1): ?><p class="text-danger"><?php echo e($errors->first('password')); ?></p><?php endif; ?>
+                </div>
+                <div class="form-group">
+                    <label for="InputPasswordConfirmed">Введіть пароль повторно</label>
+                    <input type="password" name="password_confirmation" class="form-control input-lg" id="InputPasswordConfirmed" placeholder="••••••••••••">
+                    <p class="help-block">Пароль повинен містити не менше 6 символів.</p>
+                </div>-->
+                <?php echo csrf_field(); ?>
+
+
+                <button type="submit" class="btn btn-primary btn-lg">Оновити інформацію</button>
+            </form>
+
+        </div>
+
+    </div>
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('auction.layout', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

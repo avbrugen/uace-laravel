@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Админ панель</title>
+    <link rel="stylesheet" href="<?php echo e(asset('static/css/bootstrap.css')); ?>">
+    <script src="//cdn.ckeditor.com/4.5.3/full/ckeditor.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <?php echo $__env->yieldContent('head'); ?>
+</head>
+<body>
+
+<style>
+    /*
+ * Base structure
+ */
+
+    /* Move down content because we have a fixed navbar that is 50px tall */
+    body {
+        font-family: "PT Sans";
+        font-size: 15px;
+    }
+
+
+    /*
+     * Global add-ons
+     */
+
+    .sub-header {
+        padding-bottom: 10px;
+        border-bottom: 1px solid #eee;
+    }
+
+
+    /*
+     * Sidebar
+     */
+
+    /* Hide for mobile, show later */
+    .sidebar {
+        display: none;
+    }
+    @media (min-width: 768px) {
+        .sidebar {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 1000;
+            display: block;
+            padding: 20px;
+            overflow-x: hidden;
+            overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+            background-color: #f5f5f5;
+            border-right: 1px solid #eee;
+        }
+    }
+
+    /* Sidebar navigation */
+    .nav-sidebar {
+        margin-right: -21px; /* 20px padding + 1px border */
+        margin-bottom: 20px;
+        margin-left: -20px;
+    }
+    .nav-sidebar > li > a {
+        padding-right: 20px;
+        padding-left: 20px;
+    }
+    .nav-sidebar > .active > a {
+        color: #fff;
+        background-color: #428bca;
+    }
+    .nav-sidebar > .active > a:hover {
+        color: #000;
+    }
+
+    /*
+     * Main content
+     */
+
+    .main {
+        padding: 20px;
+    }
+    @media (min-width: 768px) {
+        .main {
+            padding-right: 40px;
+            padding-left: 40px;
+        }
+    }
+    .main .page-header {
+        margin-top: 0;
+    }
+
+
+
+    /*
+     * Placeholder dashboard ideas
+     */
+
+    .placeholders {
+        margin-bottom: 30px;
+        text-align: center;
+    }
+    .placeholders h4 {
+        margin-bottom: 0;
+    }
+    .placeholder {
+        margin-bottom: 20px;
+    }
+    .placeholder img {
+        display: inline-block;
+        border-radius: 50%;
+    }
+
+    .sidebar .glyphicon {
+        margin-right: 5px;
+    }
+
+    .sidebar {
+        background-color: #222d32!important;
+        width: 230px;
+    }
+
+    .sidebar a {
+        color: #b8c7ce;
+    }
+
+    .sidebar li.active a {
+        color: #fff;
+        background: #314148;
+        border-left-color: #3c8dbc;
+    }
+    .sidebar li a:hover {
+        color: #fff!important;
+        background-color: #1e282c;
+    }
+
+    .sidebar li a:focus {
+        color: #fff!important;
+        background-color: #1e282c;
+    }
+
+    .main {
+        margin-left: 250px;
+    }
+
+    @media (max-width: 768px) {
+        .main {
+            margin: 0;
+        }
+    }
+
+</style>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+            <ul class="nav nav-sidebar nav-fo">
+                <li><a href="/auctions" style="font-size: 25px"> UACE</a></li>
+            </ul>
+            <ul class="nav nav-sidebar nav-fo">
+                <li class="active"><a href="/dashboard"><i class="glyphicon glyphicon-home"></i> Стартовая</a></li>
+                <li><a href="<?php echo e(action('DashboardController@getAddPage')); ?>"><i class="glyphicon glyphicon-file"></i> Добавить страницу</a></li>
+                <li><a href="<?php echo e(action('DashboardController@getAddNews')); ?>"><i class="glyphicon glyphicon-list-alt"></i> Добавить запись</a></li>
+            </ul>
+            <ul class="nav nav-sidebar">
+                <li><a href="<?php echo e(action('DashboardController@getAuctions')); ?>"><i class="glyphicon glyphicon-plus"></i> Аукционы</a></li>
+                <li><a href="<?php echo e(action('CategoriesController@getCategories')); ?>"><i class="glyphicon glyphicon-th-large"></i> Категории</a></li>
+                <li><a href="<?php echo e(action('DashboardController@getUsers')); ?>"><i class="glyphicon glyphicon-user"></i> Пользователи</a></li>
+                <li><a href="<?php echo e(action('DashboardController@getFileManager')); ?>"><i class="glyphicon glyphicon-folder-open"></i> Файловый менеджер</a></li>
+             </ul>
+            <ul class="nav nav-sidebar">
+                <li><a href="<?php echo e(action('DashboardController@getSettings')); ?>"><i class="glyphicon glyphicon-cog"></i> Настройки</a></li>
+                <li><a href="/auth/logout"><i class="glyphicon glyphicon-log-in"></i> Выход</a></li>
+            </ul>
+        </div>
+        <div class="col-sm-9 col-md-10 main">
+            <?php echo $__env->yieldContent('content'); ?>
+        </div><!-- /main -->
+    </div>
+</div>
+
+
+
+<br><br><br><br>
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>

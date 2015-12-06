@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Админ панель</title>
+    <link rel="stylesheet" href="<?php echo e(asset('static/css/bootstrap.css')); ?>">
+    <link rel="stylesheet" href="<?php echo e(asset('static/css/dashboard.css')); ?>">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="//cdn.ckeditor.com/4.5.3/full/ckeditor.js"></script>
+    <script src="<?php echo e(asset('static/js/js.cookie.js')); ?>"></script>
+    <link href='https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700,700italic&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,300,100,700&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,400italic,300italic,300,600,600italic,700,700italic,800,800italic&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+    <?php echo $__env->yieldContent('head'); ?>
+</head>
+<body>
+
+
+<div class="container-fluid <?php if(isset($_COOKIE['sidebar']) && $_COOKIE['sidebar'] == 'hide'): ?> sidebar-hided <?php endif; ?>" >
+    <div class="row">
+
+        <div class="close_sidebar close_sidebar_open"><i class="glyphicon glyphicon-chevron-right"></i></div>
+
+        <div class="col-sm-3 col-md-2 sidebar">
+            <ul class="nav nav-sidebar nav-fo">
+                <li><a href="/auctions" style="font-size: 25px"> UACE</a></li>
+            </ul>
+            <ul class="nav nav-sidebar nav-fo">
+                <li class="active"><a href="/dashboard"><i class="glyphicon glyphicon-home"></i> Стартова</a></li>
+                <li><a href="<?php echo e(action('DashboardController@getAddPage')); ?>"><i class="glyphicon glyphicon-file"></i> Додати сторінку</a></li>
+                <li><a href="<?php echo e(action('DashboardController@getAddNews')); ?>"><i class="glyphicon glyphicon-list-alt"></i> Додати запис</a></li>
+            </ul>
+            <ul class="nav nav-sidebar">
+                <li><a href="<?php echo e(action('DashboardController@getAuctions')); ?>"><i class="glyphicon glyphicon-plus"></i> Аукціони</a></li>
+                <li><a href="<?php echo e(action('CategoriesController@getCategories')); ?>"><i class="glyphicon glyphicon-th-large"></i> Категорії</a></li>
+                <li><a href="<?php echo e(action('DashboardController@getUsers')); ?>"><i class="glyphicon glyphicon-user"></i> Користувачі</a></li>
+                <li><a href="<?php echo e(action('DashboardController@getFileManager')); ?>"><i class="glyphicon glyphicon-folder-open"></i> Файловий менеджер</a></li>
+             </ul>
+            <ul class="nav nav-sidebar">
+                <li><a href="<?php echo e(action('DashboardController@getSettings')); ?>"><i class="glyphicon glyphicon-cog"></i> Налаштування</a></li>
+                <li><a class="close_sidebar" href="#"><i class="glyphicon glyphicon-chevron-left"></i> Приховати меню</a></li>
+                <li><a href="/auth/logout"><i class="glyphicon glyphicon-log-in"></i> Вихід</a></li>
+            </ul>
+        </div>
+        <div class="col-sm-9 col-md-10 main">
+            <?php echo $__env->yieldContent('content'); ?>
+        </div><!-- /main -->
+    </div>
+</div>
+
+<br><br><br>
+<script src="<?php echo e(asset('static/js/dashboard.js')); ?>"></script>
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+    (function (d, w, c) {
+        (w[c] = w[c] || []).push(function() {
+            try {
+                w.yaCounter33833349 = new Ya.Metrika({
+                    id:33833349,
+                    clickmap:true,
+                    trackLinks:true,
+                    accurateTrackBounce:true,
+                    webvisor:true
+                });
+            } catch(e) { }
+        });
+
+        var n = d.getElementsByTagName("script")[0],
+            s = d.createElement("script"),
+            f = function () { n.parentNode.insertBefore(s, n); };
+        s.type = "text/javascript";
+        s.async = true;
+        s.src = "https://mc.yandex.ru/metrika/watch.js";
+
+        if (w.opera == "[object Opera]") {
+            d.addEventListener("DOMContentLoaded", f, false);
+        } else { f(); }
+    })(document, window, "yandex_metrika_callbacks");
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/33833349" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+
+</body>
+</html>

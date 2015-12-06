@@ -1,0 +1,34 @@
+<?php $__env->startSection('content'); ?>
+
+    <div class="container-fluid">
+        <h2 class="sub-header" style="margin-bottom: 20px">Настройки</h2>
+
+        <?php foreach($errors->all(':message') as $message): ?>
+            <div class="alert alert-danger"><?php echo e($message); ?></div>
+        <?php endforeach; ?>
+
+        <?php if(Session::has('success')): ?>
+            <div class="alert alert-success"><?php echo e(Session::get('success')); ?></div>
+        <?php endif; ?>
+
+        <form role="form" method="post">
+
+            <?php echo csrf_field(); ?>
+
+        <?php foreach($settings as $setting): ?>
+                <div class="form-group">
+                    <label><?php echo e($setting->title); ?></label>
+                    <input type="text" class="form-control" name="<?php echo e($setting->name); ?>" value="<?php echo e($setting->value); ?>" <?php if($setting->may_change == 0): ?> disabled <?php endif; ?>>
+                </div>
+        <?php endforeach; ?>
+
+            <button type="submit">Применить</button>
+
+        </form>
+
+
+    </div>
+
+
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('dashboard.layout', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

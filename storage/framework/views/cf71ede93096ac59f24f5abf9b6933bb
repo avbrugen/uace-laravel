@@ -1,0 +1,4 @@
+<h2>Вітаємо, <?php echo e($first_name); ?> <?php echo e($last_name); ?>!</h2>
+
+<p>Ви перемогли в аукціоні «<a href="<?php echo e(action('AuctionsController@getAuctionPage', ['id' => $auction_id])); ?>"><?php echo e($auction_title); ?></a>».<br/>
+    Запропонована ціна: <?php echo e(number_format($win_cost, 2, ',', ' ')); ?> <?php echo e(trans('theme.currency.'.$auction_cyr)); ?></p>

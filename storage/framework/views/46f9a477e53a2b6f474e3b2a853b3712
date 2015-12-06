@@ -1,0 +1,3 @@
+<h2>Вітаємо, <?php echo e($first_name); ?> <?php echo e($last_name); ?>!</h2>
+<p>Адміністрація змінила статус вашого лота «<a href="<?php echo e(action('AuctionsController@getAuctionPage', ['id' => $lot_id])); ?>"><?php echo e($lot_title); ?></a>» на: <b><?php echo e($status); ?></b>.
+<p>З повагою, система електронних торгів UACE.</p>

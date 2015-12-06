@@ -1,0 +1,43 @@
+
+
+<?php $__env->startSection('title'); ?><?php echo e($page->title); ?> - <?php echo app('translator')->get('theme.sitename_title'); ?><?php $__env->stopSection(); ?>
+
+<?php $__env->startSection('content'); ?>
+
+    <h2>Задати питання</h2>
+
+<div id="question-page">
+
+    <?php if(Session::has('sended')): ?>
+        <div class="alert alert-success"><?php echo e(Session::get('sended')); ?></div>
+    <?php endif; ?>
+
+    <form action="/forms/question" method="post" role="form">
+        <div class="form-group <?php if($errors->has('person')): ?>has-error <?php endif; ?>">
+            <label for="InputName">Ваше ім&#39;я</label>
+            <input class="form-control" id="InputName" name="person" placeholder="" type="text" value="<?php echo e(old('person')); ?>" />
+        </div>
+
+        <div class="form-group <?php if($errors->has('phone')): ?>has-error <?php endif; ?>">
+            <label>Телефон</label>
+            <input class="form-control" name="phone" placeholder="+38 (099) 999-99-99" type="text" value="<?php echo e(old('phone')); ?>" />
+        </div>
+
+        <div class="form-group <?php if($errors->has('email')): ?>has-error <?php endif; ?>">
+            <label>E-mail</label>
+            <input class="form-control" id="InputEmail" name="email" placeholder="" type="email" value="<?php echo e(old('email')); ?>" />
+        </div>
+
+        <input name="_token" type="hidden" value="<?php echo e(csrf_token()); ?>" />
+        <div class="form-group <?php if($errors->has('question')): ?>has-error <?php endif; ?>">
+            <label for="InputQuestion">Питання</label>
+            <textarea class="form-control" name="question" rows="5"><?php echo e(old('question')); ?></textarea>
+        </div>
+        <button class="btn btn-warning btn-lg" type="submit">Задати питання</button>
+    </form>
+</div>
+
+    <?php echo $page->contant; ?>
+
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layouts', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

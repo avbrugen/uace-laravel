@@ -1,0 +1,2 @@
+<h2>Вітаємо, <?php echo e($first_name); ?> <?php echo e($last_name); ?>!</h2>
+<p>Адміністрація перевірила Ваш лот «<a href="<?php echo e(action('AuctionsController@getAuctionPage', ['id' => $lot_id])); ?>"><?php echo e($lot_title); ?></a>», і надала йому статус: <b><?php echo e(trans('theme.statuses.'.$status_id)); ?></b>. Тепер лот доступний для подачі заявки на участь у торгах.

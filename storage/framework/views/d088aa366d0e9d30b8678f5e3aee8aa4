@@ -1,0 +1,401 @@
+
+
+<form id="AddLot" method="post" enctype="multipart/form-data" action style="margin-top: 50px;padding: 0 90px;">
+
+    <?php if(Auth::check() && Auth::user()->is_admin == 1): ?>
+        <?php foreach($errors->all(':message') as $message): ?>
+            <div class="alert alert-danger"><?php echo e($message); ?></div>
+        <?php endforeach; ?>
+    <?php endif; ?>
+
+    <?php echo csrf_field(); ?>
+
+    <div class="row">
+        <div class="col-md-6">
+
+            <div class="form-group <?php if($errors->has('lot_title')): ?>has-error <?php endif; ?>">
+                <label for="lot_title">Назва лоту <span class="label-required">*</span></label>
+                <input type="text" name="lot_title" class="form-control input-lg" id="lot_title" placeholder="" value="<?php echo e(old('lot_title')); ?>">
+            </div>
+
+        </div>
+        <div class="col-md-6">
+
+            <div class="form-group <?php if($errors->has('lot_category')): ?>has-error <?php endif; ?>">
+                <label for="lot_category">Категорія лоту <span class="label-required">*</span></label>
+                <select id="SelectCategory" class="form-control input-lg" name="lot_category">
+                    <option value>Не обрано</option>
+                    <? $cats = \App\Cat::roots()->get(); ?>
+                    <?php foreach($cats as $category): ?>
+                        <option <?php if(old('lot_category') == $category->id): ?>selected <?php endif; ?> value="<?php echo e($category->id); ?>"><?php echo e($category->name); ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="row load_children" style="display: none">
+        <div class="col-xs-12">
+            <div class="form-group <?php if($errors->has('lot_type')): ?>has-error <?php endif; ?>">
+                <div id="loadChildren"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Нерухомість -->
+    <div id="Category-1" class="category_group" style="margin: 40px 0 30px 0;display: none">
+
+        <div class="row">
+            <div class="col-xs-6">
+
+                <div class="form-group <?php if($errors->has('property_material')): ?>has-error <?php endif; ?>">
+                    <label for="property_material">Матеріал будівлі <span class="label-required">*</span></label>
+                    <select class="form-control input-lg" name="property_material">
+                        <option value>Не обрано</option>
+                        <?php foreach(trans('theme.property_material') as $val => $property_material): ?>
+                            <option value="<?php echo e($val); ?>" <?php if(old('property_material') == $val): ?>selected <?php endif; ?>><?php echo e($property_material); ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+
+            </div>
+
+            <div class="col-xs-6">
+
+                <div class="form-group <?php if($errors->has('property_purpose')): ?>has-error <?php endif; ?>">
+                    <label>Цільове призначення</label>
+                    <select class="form-control input-lg" name="property_purpose">
+                        <option value>Не обрано</option>
+                        <?php foreach(trans('theme.property_purpose') as $val => $property_purpose): ?>
+                            <option value="<?php echo e($val); ?>" <?php if(old('property_purpose') == $val): ?>selected <?php endif; ?>><?php echo e($property_purpose); ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-3">
+                <div class="form-group <?php if($errors->has('property_floors')): ?>has-error <?php endif; ?>">
+                    <label for="property_floors">Кiлькiсть поверхiв</label>
+                    <input type="text" name="property_floors" class="form-control input-lg" id="property_floors" value="<?php echo e(old('property_floors')); ?>">
+                </div>
+            </div>
+            <div class="col-xs-3">
+                <div class="form-group <?php if($errors->has('property_areas')): ?>has-error <?php endif; ?>">
+                    <label for="property_areas">Кiмнат/примiщень</label>
+                    <input type="text" name="property_areas" class="form-control input-lg" id="property_areas" value="<?php echo e(old('property_areas')); ?>">
+                </div>
+            </div>
+            <div class="col-xs-3">
+                <div class="form-group <?php if($errors->has('property_totalarea')): ?>has-error <?php endif; ?>">
+                    <label for="property_totalarea">Загальна площа, кв.м <span class="label-required">*</span></label>
+                    <input type="text" name="property_totalarea" class="form-control input-lg" id="property_totalarea" value="<?php echo e(old('property_totalarea')); ?>">
+                </div>
+            </div>
+            <div class="col-xs-3">
+                <div class="form-group <?php if($errors->has('property_livingarea')): ?>has-error <?php endif; ?>">
+                    <label for="property_livingarea">Житлова площа, кв.м <span class="label-required">*</span></label>
+                    <input type="text" name="property_livingarea" class="form-control input-lg" id="property_livingarea" value="<?php echo e(old('property_livingarea')); ?>">
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Автомобілі -->
+    <div id="Category-4" class="category_group" style="margin: 40px 0 30px 0;display: none">
+        <div class="row">
+            <div class="col-xs-3">
+                <div class="form-group <?php if($errors->has('auto_mark')): ?>has-error <?php endif; ?>">
+                    <label for="auto_mark">Марка <span class="label-required">*</span></label>
+                    <select class="form-control" name="auto_mark" id="auto_mark">
+                        <option value>Не обрано</option>
+                        <?php foreach(trans('theme.auto_mark') as $k => $auto_mark): ?>
+                            <option value="<?php echo e($k); ?>" <?php if(old('auto_mark') == $k): ?>selected <?php endif; ?>><?php echo e($auto_mark); ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+            </div>
+            <div class="col-xs-3">
+                <div class="form-group <?php if($errors->has('auto_model')): ?>has-error <?php endif; ?>">
+                    <label for="auto_model">Модель <span class="label-required">*</span></label>
+                    <input type="text" name="auto_model" class="form-control" id="auto_model" value="<?php echo e(old('auto_model')); ?>">
+                </div>
+            </div>
+            <div class="col-xs-3">
+                <div class="form-group <?php if($errors->has('auto_year')): ?>has-error <?php endif; ?>">
+                    <label for="auto_year">Pік випуску <span class="label-required">*</span></label>
+                    <select class="form-control" name="auto_year" id="auto_year">
+                        <option value="">Не обрано</option>
+                        <?php foreach(trans('theme.auto_year') as $auto_year): ?>
+                            <option value="<?php echo e($auto_year); ?>" <?php if(old('auto_year') == $auto_year): ?>selected <?php endif; ?>><?php echo e($auto_year); ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+            </div>
+            <div class="col-xs-3">
+
+                <div class="form-group <?php if($errors->has('auto_potencia')): ?>has-error <?php endif; ?>">
+                    <label for="auto_potencia">Об'єм двигуна</label>
+                    <input type="text" name="auto_potencia" class="form-control" value="<?php echo e(old('auto_potencia')); ?>">
+                </div>
+
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-xs-3">
+                <div class="form-group <?php if($errors->has('auto_transmission')): ?>has-error <?php endif; ?>">
+                    <label for="auto_transmission">Коробка передач <span class="label-required">*</span></label>
+                    <select class="form-control" name="auto_transmission" id="auto_transmission">
+                        <option value="">Не обрано</option>
+                        <?php foreach(trans('theme.auto_transmission') as $k => $auto_transmission): ?>
+                            <option value="<?php echo e($k); ?>" <?php if(old('auto_transmission') == $k): ?>selected <?php endif; ?>><?php echo e($auto_transmission); ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+            </div>
+            <div class="col-xs-3">
+                <div class="form-group <?php if($errors->has('auto_drive')): ?>has-error <?php endif; ?>">
+                    <label for="auto_drive">Тип привода <span class="label-required">*</span></label>
+                    <select class="form-control" name="auto_drive" id="auto_drive">
+                        <option value>Не обрано</option>
+                        <?php foreach(trans('theme.auto_drive') as $k => $auto_drive): ?>
+                            <option value="<?php echo e($k); ?>" <?php if(old('auto_drive') == $k): ?>selected <?php endif; ?>><?php echo e($auto_drive); ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+            </div>
+            <div class="col-xs-3">
+                <div class="form-group <?php if($errors->has('auto_fuel')): ?>has-error <?php endif; ?>">
+                    <label for="auto_fuel">Тип пального <span class="label-required">*</span></label>
+                    <select class="form-control" name="auto_fuel" id="auto_fuel">
+                        <option value>Не обрано</option>
+                        <?php foreach(trans('theme.auto_fuel') as $k => $auto_fuel): ?>
+                            <option value="<?php echo e($k); ?>" <?php if(old('auto_drive') == $k): ?>selected <?php endif; ?>><?php echo e($auto_fuel); ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+            </div>
+            <div class="col-xs-3">
+                <div class="form-group <?php if($errors->has('auto_doors')): ?>has-error <?php endif; ?>">
+                    <label for="auto_doors">Кількість дверей <span class="label-required">*</span></label>
+                    <select class="form-control" name="auto_doors" id="auto_doors">
+                        <option value>Не обрано</option>
+                        <option value="2" <?php if(old('auto_drive') == 2): ?>selected <?php endif; ?>>2</option>
+                        <option value="3" <?php if(old('auto_drive') == 3): ?>selected <?php endif; ?>>3</option>
+                        <option value="4" <?php if(old('auto_drive') == 4): ?>selected <?php endif; ?>>4</option>
+                        <option value="5" <?php if(old('auto_drive') == 5): ?>selected <?php endif; ?>>5</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="col-xs-3">
+
+                <div class="form-group <?php if($errors->has('auto_mileage')): ?>has-error <?php endif; ?>">
+                    <label for="auto_mileage">Пробіг, тис. км.</label>
+                    <input type="number" name="auto_mileage" class="form-control" value="<?php echo e(old('auto_mileage')); ?>">
+                </div>
+
+            </div>
+
+            <div class="col-xs-3">
+
+                <div class="form-group <?php if($errors->has('lot_DebtorName')): ?>has-error <?php endif; ?>">
+                    <label>ПІБ боржника/Назва</label>
+                    <input type="text" name="lot_DebtorName" class="form-control" value="<?php echo e(old('lot_DebtorName')); ?>">
+                </div>
+
+            </div>
+
+            <div class="col-xs-3">
+
+                <div class="form-group <?php if($errors->has('lot_EDRPOU')): ?>has-error <?php endif; ?>">
+                    <label>ЄДРПОУ</label>
+                    <input type="number" name="lot_EDRPOU" class="form-control" value="<?php echo e(old('lot_EDRPOU')); ?>">
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <? $auction = null; ?>
+    <!-- Будівельні матеріали -->
+    <div id="Category-39" class="category_group" style="margin: 40px 0 30px 0;display: none">
+        <?php echo $__env->make('dashboard.fields.build', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+    </div>
+
+    <!-- Техніка та меблі -->
+    <div id="Category-30" class="category_group" style="margin: 40px 0 30px 0;display: none">
+        <?php echo $__env->make('dashboard.fields.stuff', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+    </div>
+
+    <!-- Корпоративні права -->
+    <div id="Category-37" class="category_group" style="margin: 40px 0 30px 0;display: none">
+        <?php echo $__env->make('dashboard.fields.corporate', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+    </div>
+
+    <div class="row" style="margin-top: 30px;">
+        <div id="upload_main" class="col-xs-3">
+            <div class="form-group">
+                <label for="lot_title">Основне зображення <span class="label-required">*</span></label>
+                <div class="dropzone" id="main_image"></div>
+            </div>
+        </div>
+
+        <div class="col-xs-9">
+            <div class="form-group">
+                <label for="lot_title">Додаткові зображення</label>
+                <div class="dropzone" id="more_image"></div>
+            </div>
+        </div>
+
+        <?php if($errors->has('lot_image')): ?>
+            <div class="col-xs-12">
+                <div class="alert alert-danger">Потрібно завантажити хоча б основне зображення!</div>
+            </div>
+        <?php endif; ?>
+
+    </div>
+
+    <div class="row">
+        <div class="col-xs-6">
+            <div class="form-group">
+                <label for="more_information">Додаткові відомості</label>
+                <textarea class="form-control" rows="4" name="more_information"><?php echo e(old('more_information')); ?></textarea>
+            </div>
+        </div>
+        <div class="col-xs-6">
+            <div class="form-group">
+                <label for="about">Відомості про майно, його склад, характеристики, опис</label>
+                <textarea class="form-control" rows="4" name="more_about"><?php echo e(old('more_about')); ?></textarea>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-xs-3">
+            <div class="form-group <?php if($errors->has('region')): ?>has-error <?php endif; ?>">
+                <label for="region">Область <span class="label-required">*</span></label>
+                <select class="form-control input-lg" name="region">
+                    <option value>Не обрано</option>
+                    <?php foreach(trans('theme.regions') as $key => $region): ?>
+                        <option value="<?php echo e($key); ?>" <?php if($key == old('region')): ?> selected <?php endif; ?>><?php echo e($region); ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+        </div>
+        <div class="col-xs-3">
+            <div class="form-group <?php if($errors->has('city')): ?>has-error <?php endif; ?>">
+                <label for="city">Місто <span class="label-required">*</span></label>
+                <input type="text" name="city" class="form-control input-lg" id="city" value="<?php echo e(old('city')); ?>">
+            </div>
+        </div>
+        <div class="col-xs-3">
+            <div class="form-group">
+                <label>Тип майна</label>
+                <select class="form-control input-lg" name="property_type">
+                    <option value>Не обрано</option>
+                    <?php foreach(trans('theme.property_type') as $val => $property_type): ?>
+                        <option value="<?php echo e($val); ?>" <?php if($val == old('property_type')): ?> selected <?php endif; ?>><?php echo e($property_type); ?></option>
+                    <?php endforeach; ?>
+                </select>
+
+            </div>
+        </div>
+        <div class="col-xs-3">
+            <div class="form-group <?php if($errors->has('data_start')): ?>has-error <?php endif; ?>">
+                <label for="data_start">Дата початку аукціону <span class="label-required">*</span></label>
+                <input type="text" name="data_start" class="form-control input-lg" id="data_start" placeholder="" value="<?php echo e(old('data_start')); ?>">
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-xs-3">
+            <label for="guarantee_fee">Гарантійний внесок <span class="label-required">*</span></label>
+            <div class="form-group <?php if($errors->has('guarantee_fee')): ?>has-error <?php endif; ?>">
+                <input type="text" name="guarantee_fee" class="form-control input-lg" id="guarantee_fee" placeholder="" value="<?php echo e(old('guarantee_fee')); ?>">
+            </div>
+        </div>
+        <div class="col-xs-2">
+            <div class="form-group">
+                <label for="starting_price" id="starting_price_lable">Стартова ціна <span class="label-required">*</span></label>
+                <div class="form-group <?php if($errors->has('starting_price')): ?>has-error <?php endif; ?>">
+                    <input type="text" name="starting_price" class="form-control input-lg" id="starting_price" placeholder="" value="<?php echo e(old('starting_price')); ?>">
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-2">
+            <div class="form-group">
+                <label for="bid_price">Крок аукціону <span class="label-required">*</span></label>
+                <div class="form-group <?php if($errors->has('bid_price')): ?>has-error <?php endif; ?>">
+                    <input type="text" name="bid_price" class="form-control input-lg" id="bid_price" placeholder="" value="<?php echo e(old('bid_price')); ?>">
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-2">
+            <div class="form-group">
+                <label>Валюта</label>
+                <select class="form-control input-lg" name="currency">
+                    <option value="UAH" <?php if(old('currency') == 'UAH'): ?> selected <?php endif; ?>>ГРН</option>
+                    <option value="USD" <?php if(old('currency') == 'USD'): ?> selected <?php endif; ?>>USD</option>
+                    <option value="EUR" <?php if(old('currency') == 'EUR'): ?> selected <?php endif; ?>>EUR</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-xs-3">
+            <div class="form-group <?php if($errors->has('date_end')): ?>has-error <?php endif; ?>">
+                <label for="date_end">Дата завершення аукціону <span class="label-required">*</span></label>
+                <input type="text" name="date_end" class="form-control input-lg" id="date_end" placeholder="" value="<?php echo e(old('date_end')); ?>">
+            </div>
+        </div>
+
+    </div>
+
+        <div class="row" style="margin-bottom: 30px">
+            <div class="col-xs-6" style="margin-top: 10px">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <label>Вкладення</label>
+                    </div>
+                    <div class="col-xs-9">
+                        <input type="file" name="documents[]" multiple>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="col-xs-6">
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" name="free_sale" id="free_sale" value="1" <?php if(old('free_sale') == 1): ?> checked <?php endif; ?>>
+                        Вільний продаж
+                    </label>
+                </div>
+            </div>
+        </div>
+
+    <button type="submit" class="btn btn-primary btn-lg">Подати оголошення</button>
+
+</form>
+
+<script>
+
+    $(document).ready(function() {
+         <?php if(old('free_sale') == 1): ?>
+                $('#data_start').prop('disabled', true);
+        $('#bid_price').prop('disabled', true);
+        $('#date_end').prop('disabled', true);
+        $('#guarantee_fee').prop('disabled', true);
+        $('#starting_price_lable').text('Стоимость');
+        <?php endif; ?>
+  });
+
+</script>
+<script src="<?php echo e(asset('static/js/addform.js')); ?>"></script>

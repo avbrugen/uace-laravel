@@ -1,0 +1,5 @@
+<h2>Аукціон №<?php echo e($auction_id); ?> розпочнеться через 10 хвилин!</h2>
+
+<p><?php echo e($first_name); ?> <?php echo e($last_name); ?>, ви є учасником аукціону <a href="<?php echo e(action('AuctionsController@getAuctionPage', ['id' => $auction_id])); ?>" target="_blank"><?php echo e($auction_title); ?></a>. Оповіщаємо, що торги почнуться через 10 хвилин.</p>
+
+<p>З повагою, система електронних торгів UACE.</p>

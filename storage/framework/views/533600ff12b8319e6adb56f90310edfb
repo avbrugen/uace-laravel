@@ -1,0 +1,22 @@
+<?php if($categories->count() > 0): ?>
+    <label for="lot_type">Тип <span class="label-required">*</span></label>
+<select id="selectLotType" class="form-control input-lg" name="lot_type">
+    <?php foreach($categories as $category): ?>
+    <option value="<?php echo e($category->id); ?>"><?php echo e($category->name); ?></option>
+<?php endforeach; ?>
+</select>
+<?php endif; ?>
+
+<script>
+    $(document).ready(function () {
+        $('#selectLotType').on('change', function(e){
+            if($(this).val() == 7 || $(this).val() == 8)
+            {
+                $('#label_plot_size span').show();
+            } else {
+                $('#label_plot_size span').hide();
+            }
+
+        });
+    });
+</script>

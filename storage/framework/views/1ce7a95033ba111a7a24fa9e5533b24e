@@ -1,0 +1,74 @@
+
+
+<?php $__env->startSection('content'); ?>
+
+    <div class="container-fluid">
+            <h2 class="sub-header">Пошук по записах</h2>
+
+        <form class="row" role="search" method="get" action="<?php echo e(action('DashboardController@searchPost')); ?>" style="margin-top: 30px;margin-bottom: 20px">
+            <div class="col-xs-5 form-group">
+                <input type="text" name="s" class="form-control" placeholder="Пошук..." <?php if(isset($request) && $request->s): ?> value="<?php echo e($request->s); ?>" <?php endif; ?>>
+            </div>
+
+            <div class="col-xs-5 form-group">
+                <select name="category" class="form-control">
+                    <?php foreach(trans('theme.news_categories') as $k => $c): ?>
+                        <option value="<?php echo e($k); ?>" <?php if(isset($request) && $request->category == $k): ?> selected <?php endif; ?>><?php echo e($c); ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+
+            <div class="col-xs-2 form-group">
+                <button type="submit" class="btn btn-warning">Показати результати</button>
+            </div>
+
+        </form>
+
+
+        <table class="table">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Заголовок</th>
+                <th>Категорія</th>
+                <th>Короткий опис</th>
+                <th>Опції</th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php foreach($articles as $article): ?>
+
+                <tr>
+                    <td><?php echo e($article->id); ?></td>
+                    <td><?php echo e($article->title); ?></td>
+                    <td><?php echo e(trans('theme.news_categories.'.$article->category)); ?></td>
+                    <td><?php echo e($article->anonce); ?></td>
+                    <td><a href="<?php echo e(action('NewsController@getArticle', ['slug' => $article->slug])); ?>">Подивитися</a>
+                        <a href="<?php echo e(action('DashboardController@getEditNews', ['id' => $article->id])); ?>">Редагувати</a>
+                        <a href="<?php echo e(action('DashboardController@getDeleteNews', ['id' => $article->id])); ?>" class="delete_article" data-id="<?php echo e($article->id); ?>">Видалити</a>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+
+
+            </tbody>
+        </table>
+
+        <?php echo $articles->appends($_GET)->render(); ?>
+
+        <script>
+            $('.delete_article').on('click', function(){
+                if (confirm("Ви підтверджуєте видалення?")) {
+                    return true;
+                } else {
+                    return false;
+                }
+            });
+
+        </script>
+
+
+    </div>
+
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('dashboard.layout', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

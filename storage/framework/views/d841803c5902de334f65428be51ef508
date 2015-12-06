@@ -1,0 +1,44 @@
+<div id="load_bets">
+<?php if($auction->status == 2): ?>
+    Аукціон ще не почався
+<?php else: ?>
+<?php if($Bets->count() > 0): ?>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>ID учасника</th>
+            <th>Дата ставки</th>
+            <th>Цена</th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php foreach($Bets as $bet): ?>
+        <tr>
+            <td><span style="color: #ec971f;"><?php echo e($bet->user_id); ?></span></td>
+            <td><?php echo e($bet->created_at); ?></td>
+            <td><?php echo e(number_format($bet->bet, 2, ',', ' ')); ?> <?php echo e(trans('theme.currency.'.$auction->currency)); ?> </td>
+        </tr>
+        <?php endforeach; ?>
+        </tbody>
+    </table>
+<?php else: ?>
+    Пропозицій ще не надходило
+<?php endif; ?>
+
+<script>
+    function getBidders() {
+        $.ajax({
+            url: '<?php echo e(action('BiddersController@ajaxGetBets', ['id' => $auction->id])); ?>',
+            type: 'GET',
+            data: 'currency=<?php echo e($auction->currency); ?>',
+            dataType: "html",
+            success: function(data){
+                $('#load_bets').html(data);
+            }
+        });
+    };
+    setInterval(function(){getBidders();},10000);
+</script>
+
+<?php endif; ?>
+</div>

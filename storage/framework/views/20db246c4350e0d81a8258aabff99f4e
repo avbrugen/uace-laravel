@@ -1,0 +1,78 @@
+
+<?php $__env->startSection('title'); ?>Система електронних торгів - <?php echo app('translator')->get('theme.sitename_title'); ?><?php $__env->stopSection(); ?>
+
+<?php $__env->startSection('content'); ?>
+    <?php echo $__env->make('auction.categories.list', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+
+    <div class="container">
+
+        <div class="search_note">Для більш швидкого вибору скористайтеся пошуком</div>
+
+        <div class="auction_main row">
+            <div class="hidden-sm hidden-xs col-md-3">
+                <?php echo $__env->make('auction.categories.filters', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+                <?php echo $__env->make('auction.widget-lastlots', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+            </div>
+            <div class="col-xs-12 col-md-9">
+                <div class="row search_by_title row-min">
+                    <div class="col-xs-5">
+                        <div class="input">
+                            <input type="text" class="form-control" form="search" name="title" placeholder="Пошук за найменуванням">
+                        </div>
+                    </div>
+                    <div class="col-xs-5">
+                        <div class="input">
+                            <select class="form-control" name="region" form="search">
+                                <option value>Область</option>
+                                <?php foreach(trans('theme.regions') as $key => $region): ?>
+                                    <option value="<?php echo e($key); ?>" <?php if($request && $request->region == $key): ?> selected <?php endif; ?>><?php echo e($region); ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-xs-1">
+                        <button type="submit" form="search" class="btn btn-warning"><i class="glyphicon glyphicon-search"></i></button>
+                    </div>
+                </div>
+
+                <div id="auctions">
+
+                            <h3 style="font-family: 'PT Sans';margin-bottom: 8px;margin-top: 0px;">Лоти продавця: <?php if($user->legal_entity): ?><?php echo e($user->legal_entity); ?><?php else: ?><?php echo e($user->first_name); ?> <?php echo e($user->last_name); ?><?php endif; ?></h3>
+<div class="contacts" style="margin-bottom: 30px;font-size: 16px"><?php if($user->phone): ?><i class="glyphicon glyphicon-phone" style="color: #ffcc00;"></i> <?php echo e($user->phone); ?><?php endif; ?><i class="glyphicon glyphicon-envelope" style="color: #ffcc00; <?php if($user->phone): ?> margin-left: 10px <?php endif; ?>"></i> <?php echo e($user->email); ?></div>
+
+                    <hr>
+                    <div class="row">
+
+                        <?php if($lots->count() > 0): ?>
+                            <?php /* Выводим цикл лотов */ ?>
+                            <?php echo $__env->make('auction.lots.item', ['auctions' => $lots], array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+                        <?php else: ?>
+                            <h4>Извините, ничего не найдено</h4>
+                        <?php endif; ?>
+
+
+
+                            <div class="clearfix">
+                                <?php echo $lots->appends($_GET)->render(); ?>
+
+                                <?php if($request && $request->items_per_page  > $lots->count() ): ?>
+                                    Аукціони з <?php echo e($lots->currentPage() *  $lots->perPage() - $lots->perPage() + 1); ?> по <?php echo e($lots->currentPage() *  $lots->perPage()); ?> із <?php echo e($lots->total()); ?> аукціонів
+                                <?php elseif($lots->total() > 10): ?>
+                                    Аукціони з <?php echo e($lots->currentPage() *  $lots->perPage() - $lots->perPage() + 1); ?> по <?php echo e($lots->currentPage() *  $lots->perPage()); ?> із <?php echo e($lots->total()); ?> аукціонів
+                                <?php else: ?>
+                                    Аукціони з <?php echo e($lots->currentPage() *  $lots->perPage() - $lots->perPage() + 1); ?> по <?php echo e($lots->total()); ?> із <?php echo e($lots->total()); ?> аукціонів
+                                <?php endif; ?>
+
+                            </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+
+
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('auction.layout', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

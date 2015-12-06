@@ -1,0 +1,22 @@
+<?php if($bets->count() > 0): ?>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>ID учасника</th>
+            <th>Дата ставки</th>
+            <th>Цена</th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php foreach($bets as $bet): ?>
+            <tr>
+                <td><span style="color: #ec971f;"><?php echo e($bet->user_id); ?></span></td>
+                <td><?php echo e($bet->created_at); ?></td>
+                <td><?php echo e(number_format($bet->bet, 2, ',', ' ')); ?> <?php echo e(trans('theme.currency.'.$currency)); ?> </td>
+            </tr>
+        <?php endforeach; ?>
+        </tbody>
+    </table>
+<?php else: ?>
+    Пропозицій ще не надходило
+<?php endif; ?>

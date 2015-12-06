@@ -1,0 +1,80 @@
+<?php $__env->startSection('content'); ?>
+
+    <div class="container-fluid">
+        <h2 class="sub-header">Участники лота №<?php echo e($auction->id); ?></h2>
+
+        <table class="table">
+            <thead>
+            <tr>
+                <th>ID пользователя</th>
+                <th width="400">Ф.И.О.</th>
+                <th>Номер телефона</th>
+                <th>Тип оплаты</th>
+                <th>Статус</th>
+                <th>Дата подачи</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+
+            <?php foreach($auction->bidders as $bidder): ?>
+
+                <tr>
+                    <td><?php echo e($bidder->user_id); ?></td>
+                    <td><?php echo e($bidder->first_name); ?> <?php echo e($bidder->last_name); ?> <?php echo e($bidder->middle_name); ?></td>
+                    <td><?php echo e($bidder->phone); ?></td>
+                    <td><?php echo e(trans('theme.payment_type.'.$bidder->payment_type)); ?></td>
+                    <td><span <?php if($bidder->status == 0): ?>style="color: red;"<?php elseif($bidder->status == 1): ?>style="color: green;"<?php elseif($bidder->status == 2): ?>style="color: #007fff;"<?php endif; ?>><?php echo e(trans('theme.bidder_status.'.$bidder->status)); ?></span></td>
+                    <td><?php echo e($bidder->created_at); ?></td>
+                    <td><a class="open_bidder_info" href="#" data-toggle="modal" data-target="#myModal" data-bidder-id="<?php echo e($bidder->id); ?>">Просмотреть</a></td>
+                </tr>
+
+            <?php endforeach; ?>
+
+
+            </tbody>
+        </table>
+
+
+        <div id="data">
+
+        </div>
+
+    </div>
+
+    <script>
+        $('.open_bidder_info').on('click', function(){
+            var _this = $(this);
+            $.ajax({
+                url: '/dashboard/auctions/<?php echo e($auction->id); ?>/bidders/'+ _this.data('bidder-id') +'/edit',             // указываем URL и
+                dataType : "html",                     // тип загружаемых данных
+                success: function (data, textStatus) { // вешаем свой обработчик на функцию success
+                    $('#DataBidder').html(data);
+                }
+            });
+        });
+    </script>
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content"  id="DataBidder">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Название модали</h4>
+                </div>
+                <div class="modal-body">
+                    ...
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+                    <button type="button" class="btn btn-primary">Сохранить изменения</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('dashboard.layout', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

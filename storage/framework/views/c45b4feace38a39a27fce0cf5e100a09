@@ -1,0 +1,6 @@
+<h2>Вітаємо, <?php echo e($last_name); ?> <?php echo e($first_name); ?>!</h2>
+<p>Ви успішно зареєстровані в системі електронних торгів UACE.</p>
+<p><b>Ваші дані для входу в систему:</b></p>
+<p>Email: <?php echo e($email); ?><br/>
+Пароль: <?php echo e($pass); ?></p>
+

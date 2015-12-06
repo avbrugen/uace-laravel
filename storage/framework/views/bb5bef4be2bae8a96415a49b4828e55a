@@ -1,0 +1,9 @@
+
+
+<?php $__env->startSection('title'); ?><?php echo e($page->title); ?> - <?php echo app('translator')->get('theme.sitename_title'); ?><?php $__env->stopSection(); ?>
+
+<?php $__env->startSection('content'); ?>
+    <?php echo $page->contant; ?>
+
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layouts', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

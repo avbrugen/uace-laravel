@@ -1,0 +1,39 @@
+<div class="row">
+    <div class="col-xs-3">
+        <div class="form-group <?php if($errors->has('stuff_brand')): ?>has-error <?php endif; ?>">
+            <label for="region">Виробник</label>
+            <select class="form-control" name="stuff_brand">
+                <option value>Не обрано</option>
+                <?php foreach(trans('theme.stuff_brand') as $key => $brand): ?>
+                    <option value="<?php echo e($key); ?>" <?php if($auction && $auction->stuff_brand == $key): ?> selected <?php endif; ?>><?php echo e($brand); ?></option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+    </div>
+
+    <div class="col-xs-3">
+        <div class="form-group <?php if($errors->has('stuff_model')): ?>has-error <?php endif; ?>">
+            <label for="region">Модель</label>
+            <select class="form-control" name="stuff_model">
+                <option value>Не обрано</option>
+                <?php foreach(trans('theme.equipment_model') as $key => $brand): ?>
+                    <option value="<?php echo e($key); ?>" <?php if($auction && $auction->stuff_model == $key): ?> selected <?php endif; ?>><?php echo e($brand); ?></option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+    </div>
+
+    <div class="col-xs-3">
+        <div class="form-group <?php if($errors->has('stuff_year')): ?>has-error <?php endif; ?>">
+            <label>Рік</label>
+            <input type="number" name="stuff_year" class="form-control" <?php if($auction): ?>value="<?php echo e($auction->stuff_year); ?>"<?php endif; ?>>
+        </div>
+    </div>
+
+    <div class="col-xs-3">
+        <div class="form-group <?php if($errors->has('stuff_diagonal')): ?>has-error <?php endif; ?>">
+            <label>Діагональ, дюймів</label>
+            <input type="number" name="stuff_diagonal" class="form-control" <?php if($auction): ?>value="<?php echo e($auction->stuff_diagonal); ?>"<?php endif; ?>>
+        </div>
+    </div>
+</div>

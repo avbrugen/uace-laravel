@@ -1,0 +1,2 @@
+<h2>Вітаємо!</h2>
+<p>Подана нова заявка на участь в аукціоні «<a href="{{ action('AuctionsController@getAuctionPage', ['id' => $lot_id]) }}" target="_blank">{{ $lot_title }}</a>». Перевірте її і встановіть статус.</p>

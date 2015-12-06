@@ -1,0 +1,5 @@
+<h2>Нове запитання</h2>
+<p>Ім'я: <?php echo e($person); ?></p>
+<p>Номер телефону: <?php echo e($phone); ?></p>
+<p>E-mail: <?php echo e($email); ?></p>
+<p>Питання: <?php echo e($question); ?></p>

@@ -1,0 +1,2 @@
+<h2>Вітаємо!</h2>
+<p>Подана нова заявка на участь в аукціоні «<a href="<?php echo e(action('AuctionsController@getAuctionPage', ['id' => $lot_id])); ?>" target="_blank"><?php echo e($lot_title); ?></a>». Перевірте її і встановіть статус.</p>

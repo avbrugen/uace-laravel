@@ -1,0 +1,3 @@
+<?php foreach(trans('theme.statuses_free') as $key => $status): ?>
+    <option value="<?php echo e($key); ?>"><?php echo e($status); ?></option>
+<?php endforeach; ?>
