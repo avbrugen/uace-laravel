@@ -241,11 +241,11 @@
                             </div>
 
                             <div class="form-group">
-                                <input type="text" name="" placeholder="Номер заявки" class="form-control">
+                                <input type="text" name="title" @if($request && $request->title)value="{{ $request->title }}"@endif placeholder="Назва лота" class="form-control">
                             </div>
 
                             <div class="form-group">
-                                <input type="text" name="lot_user_number" @if($request && $request->lot_user_number)value="{{ $request->lot_user_number }}"@endif placeholder="Код замовника" class="form-control">
+                                <input type="text" name="lot_user" @if($request && $request->lot_user)value="{{ $request->lot_user }}"@endif placeholder="Найменування замовника" class="form-control">
                             </div>
 
                             <button type="submit" class="btn btn-warning btn-lg">Показати результати</button>
@@ -545,11 +545,11 @@
                             </div>
 
                             <div class="form-group">
-                                <input type="text" name="" placeholder="Номер заявки" class="form-control">
+                                <input type="text" name="title" @if($request && $request->title)value="{{ $request->title }}"@endif placeholder="Назва лота" class="form-control">
                             </div>
 
                             <div class="form-group">
-                                <input type="text" name="lot_user_number" @if($request && $request->lot_user_number)value="{{ $request->lot_user_number }}"@endif placeholder="Код замовника" class="form-control">
+                                <input type="text" name="lot_user" @if($request && $request->lot_user)value="{{ $request->lot_user }}"@endif placeholder="Найменування замовника" class="form-control">
                             </div>
 
                             <button type="submit" class="btn btn-warning btn-lg">Показати результати</button>
@@ -754,11 +754,11 @@
                             </div>
 
                             <div class="form-group">
-                                <input type="text" name="" placeholder="Номер заявки" class="form-control">
+                                <input type="text" name="title" @if($request && $request->title)value="{{ $request->title }}"@endif placeholder="Назва лота" class="form-control">
                             </div>
 
                             <div class="form-group">
-                                <input type="text" name="lot_user_number" @if($request && $request->lot_user_number)value="{{ $request->lot_user_number }}"@endif placeholder="Код замовника" class="form-control">
+                                <input type="text" name="lot_user" @if($request && $request->lot_user)value="{{ $request->lot_user }}"@endif placeholder="Найменування замовника" class="form-control">
                             </div>
 
                             <button type="submit" class="btn btn-warning btn-lg">Показати результати</button>
@@ -975,11 +975,11 @@
                             </div>
 
                             <div class="form-group">
-                                <input type="text" name="" placeholder="Номер заявки" class="form-control">
+                                <input type="text" name="title" @if($request && $request->title)value="{{ $request->title }}"@endif placeholder="Назва лота" class="form-control">
                             </div>
 
                             <div class="form-group">
-                                <input type="text" name="lot_user_number" @if($request && $request->lot_user_number)value="{{ $request->lot_user_number }}"@endif placeholder="Код замовника" class="form-control">
+                                <input type="text" name="lot_user" @if($request && $request->lot_user)value="{{ $request->lot_user }}"@endif placeholder="Найменування замовника" class="form-control">
                             </div>
 
                             <button type="submit" class="btn btn-warning btn-lg">Показати результати</button>
@@ -1176,11 +1176,11 @@
                             </div>
 
                             <div class="form-group">
-                                <input type="text" name="" placeholder="Номер заявки" class="form-control">
+                                <input type="text" name="title" @if($request && $request->title)value="{{ $request->title }}"@endif placeholder="Назва лота" class="form-control">
                             </div>
 
                             <div class="form-group">
-                                <input type="text" name="lot_user_number" @if($request && $request->lot_user_number)value="{{ $request->lot_user_number }}"@endif placeholder="Код замовника" class="form-control">
+                                <input type="text" name="lot_user" @if($request && $request->lot_user)value="{{ $request->lot_user }}"@endif placeholder="Найменування замовника" class="form-control">
                             </div>
 
                             <button type="submit" class="btn btn-warning btn-lg">Показати результати</button>

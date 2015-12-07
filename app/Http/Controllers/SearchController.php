@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Cache;
+use \App\User;
 
 class SearchController extends Controller
 {
@@ -30,9 +31,7 @@ class SearchController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * Обрабатываем стандартный поиск
      */
     public function getQuery(Request $request)
     {
@@ -185,9 +184,7 @@ class SearchController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
+     * Обрабатываем стандартный и расширенный поиск для категории "Недвижимость"
      */
     public function getRealEstateQuery(Request $request)
     {
@@ -202,8 +199,34 @@ class SearchController extends Controller
             $auctions = $auctions->where('id', '=', $request->lot_number);
         }
 
-        if($request->lot_user_number) {
-            $auctions = $auctions->where('user', '=', $request->lot_user_number);
+        if($request->lot_user) {
+            $searchTerms = explode(' ', $request->lot_user);
+
+            $query = User::query();
+            foreach($searchTerms as $searchTerm){
+                $query->where(function($q) use ($searchTerm){
+                    $q->where('first_name', 'like', '%'.$searchTerm.'%')
+                    ->orWhere('last_name', 'like', '%'.$searchTerm.'%')
+                    ->orWhere('legal_entity', 'like', '%'.$searchTerm.'%');
+                });
+            }
+
+            $users = $query->get();
+            
+            // Массив для ID обнаруженных пользователей
+            $users_id = [];
+
+            // Если есть пользователи, соответствующие запросу
+            if($users->count() > 0) {
+                // Перебираем каждого пользователя
+                foreach ($users as $user) {
+                    // Добавляем ID пользователя в массив $users_id
+                    array_push($users_id, $user->id);
+                }
+            }
+
+            // Применяем фильтрацию по совпадению с ID в массиве $users_id
+            $auctions = $auctions->whereIn('user', $users_id);
         }
 
         if($request->property_material) {
@@ -247,6 +270,11 @@ class SearchController extends Controller
             $auctions = $auctions->where('starting_price', '<=', $request->price_to);
         }
 
+        if($request->title)
+        {
+            $auctions = $auctions->where('title', 'like', '%'.$request->title.'%')->orWhere('id', '=', $request->title);
+        }
+
         if($request->region) {
             $auctions = $auctions->where('region', '=', $request->region);
         }
@@ -268,8 +296,6 @@ class SearchController extends Controller
             $auctions = $auctions->where('date_end', '<=', Carbon::parse($request->date_end)->format('Y-m-d'));
         }
 
-
-
         $auctions = $auctions->paginate(10);
         $categories = Cat::roots()->get();
         $currentCategory = Cat::find($request->category);
@@ -278,10 +304,7 @@ class SearchController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * Обрабатываем стандартный и расширенный поиск для категории "Авто"
      */
     public function getAutoQuery(Request $request)
     {
@@ -295,8 +318,34 @@ class SearchController extends Controller
             $auctions = $auctions->where('id', '=', $request->lot_number);
         }
 
-        if($request->lot_user_number) {
-            $auctions = $auctions->where('user', '=', $request->lot_user_number);
+        if($request->lot_user) {
+            $searchTerms = explode(' ', $request->lot_user);
+
+            $query = User::query();
+            foreach($searchTerms as $searchTerm){
+                $query->where(function($q) use ($searchTerm){
+                    $q->where('first_name', 'like', '%'.$searchTerm.'%')
+                    ->orWhere('last_name', 'like', '%'.$searchTerm.'%')
+                    ->orWhere('legal_entity', 'like', '%'.$searchTerm.'%');
+                });
+            }
+
+            $users = $query->get();
+            
+            // Массив для ID обнаруженных пользователей
+            $users_id = [];
+
+            // Если есть пользователи, соответствующие запросу
+            if($users->count() > 0) {
+                // Перебираем каждого пользователя
+                foreach ($users as $user) {
+                    // Добавляем ID пользователя в массив $users_id
+                    array_push($users_id, $user->id);
+                }
+            }
+
+            // Применяем фильтрацию по совпадению с ID в массиве $users_id
+            $auctions = $auctions->whereIn('user', $users_id);
         }
 
         if($request->price_from)
@@ -349,6 +398,11 @@ class SearchController extends Controller
             $auctions = $auctions->where('region', '=', $request->region);
         }
 
+        if($request->title)
+        {
+            $auctions = $auctions->where('title', 'like', '%'.$request->title.'%')->orWhere('id', '=', $request->title);
+        }
+
         if($request->property_type) {
             $auctions = $auctions->whereIn('property_type', $request->property_type);
         }
@@ -370,7 +424,9 @@ class SearchController extends Controller
         return view('auction.search', ['auctions' => $auctions, 'categories' => $categories, 'currentCategory' => $currentCategory, 'request' => $request]);
     }
 
-
+    /**
+     * Обрабатываем стандартный и расширенный поиск для категории "Строительные материалы"
+     */
     public function getBuildQuery(Request $request)
     {
         $auctions = Auction::query();
@@ -380,6 +436,9 @@ class SearchController extends Controller
         }
         if($request->region) {
             $auctions = $auctions->where('region', '=', $request->region);
+        }
+        if($request->title) {
+            $auctions = $auctions->where('title', 'like', '%'.$request->title.'%')->orWhere('id', '=', $request->title);
         }
         if($request->city) {
             $auctions = $auctions->where('city', 'like', '%'.$request->city.'%');
@@ -426,8 +485,34 @@ class SearchController extends Controller
         if($request->lot_number) {
             $auctions = $auctions->where('id', '=', $request->lot_number);
         }
-        if($request->lot_user_number) {
-            $auctions = $auctions->where('user', '=', $request->lot_user_number);
+        if($request->lot_user) {
+            $searchTerms = explode(' ', $request->lot_user);
+
+            $query = User::query();
+            foreach($searchTerms as $searchTerm){
+                $query->where(function($q) use ($searchTerm){
+                    $q->where('first_name', 'like', '%'.$searchTerm.'%')
+                    ->orWhere('last_name', 'like', '%'.$searchTerm.'%')
+                    ->orWhere('legal_entity', 'like', '%'.$searchTerm.'%');
+                });
+            }
+
+            $users = $query->get();
+            
+            // Массив для ID обнаруженных пользователей
+            $users_id = [];
+
+            // Если есть пользователи, соответствующие запросу
+            if($users->count() > 0) {
+                // Перебираем каждого пользователя
+                foreach ($users as $user) {
+                    // Добавляем ID пользователя в массив $users_id
+                    array_push($users_id, $user->id);
+                }
+            }
+
+            // Применяем фильтрацию по совпадению с ID в массиве $users_id
+            $auctions = $auctions->whereIn('user', $users_id);
         }
         $auctions = $auctions->paginate(10);
         $categories = Cat::roots()->get();
@@ -437,6 +522,9 @@ class SearchController extends Controller
 
     }
 
+    /**
+     * Обрабатываем стандартный и расширенный поиск для категории "Производственное оборудование"
+     */
     public function getEquipmentQuery(Request $request)
     {
         $auctions = Auction::query();
@@ -446,6 +534,9 @@ class SearchController extends Controller
         }
         if($request->region) {
             $auctions = $auctions->where('region', '=', $request->region);
+        }
+        if($request->title) {
+            $auctions = $auctions->where('title', 'like', '%'.$request->title.'%')->orWhere('id', '=', $request->title);
         }
         if($request->city) {
             $auctions = $auctions->where('city', 'like', '%'.$request->city.'%');
@@ -483,8 +574,34 @@ class SearchController extends Controller
         if($request->lot_number) {
             $auctions = $auctions->where('id', '=', $request->lot_number);
         }
-        if($request->lot_user_number) {
-            $auctions = $auctions->where('user', '=', $request->lot_user_number);
+        if($request->lot_user) {
+            $searchTerms = explode(' ', $request->lot_user);
+
+            $query = User::query();
+            foreach($searchTerms as $searchTerm){
+                $query->where(function($q) use ($searchTerm){
+                    $q->where('first_name', 'like', '%'.$searchTerm.'%')
+                    ->orWhere('last_name', 'like', '%'.$searchTerm.'%')
+                    ->orWhere('legal_entity', 'like', '%'.$searchTerm.'%');
+                });
+            }
+
+            $users = $query->get();
+            
+            // Массив для ID обнаруженных пользователей
+            $users_id = [];
+
+            // Если есть пользователи, соответствующие запросу
+            if($users->count() > 0) {
+                // Перебираем каждого пользователя
+                foreach ($users as $user) {
+                    // Добавляем ID пользователя в массив $users_id
+                    array_push($users_id, $user->id);
+                }
+            }
+
+            // Применяем фильтрацию по совпадению с ID в массиве $users_id
+            $auctions = $auctions->whereIn('user', $users_id);
         }
         $auctions = $auctions->paginate(10);
         $categories = Cat::roots()->get();
@@ -494,6 +611,9 @@ class SearchController extends Controller
 
     }
 
+    /**
+     * Обрабатываем стандартный и расширенный поиск для категории "Техника и мебель"
+     */
     public function getStuffQuery(Request $request) {
         $auctions = Auction::query();
         $auctions = $auctions->where('category', '=', $request->category);
@@ -502,6 +622,9 @@ class SearchController extends Controller
         }
         if($request->region) {
             $auctions = $auctions->where('region', '=', $request->region);
+        }
+        if($request->title) {
+            $auctions = $auctions->where('title', 'like', '%'.$request->title.'%')->orWhere('id', '=', $request->title);
         }
         if($request->city) {
             $auctions = $auctions->where('city', 'like', '%'.$request->city.'%');
@@ -530,8 +653,34 @@ class SearchController extends Controller
         if($request->lot_number) {
             $auctions = $auctions->where('id', '=', $request->lot_number);
         }
-        if($request->lot_user_number) {
-            $auctions = $auctions->where('user', '=', $request->lot_user_number);
+        if($request->lot_user) {
+            $searchTerms = explode(' ', $request->lot_user);
+
+            $query = User::query();
+            foreach($searchTerms as $searchTerm){
+                $query->where(function($q) use ($searchTerm){
+                    $q->where('first_name', 'like', '%'.$searchTerm.'%')
+                    ->orWhere('last_name', 'like', '%'.$searchTerm.'%')
+                    ->orWhere('legal_entity', 'like', '%'.$searchTerm.'%');
+                });
+            }
+
+            $users = $query->get();
+            
+            // Массив для ID обнаруженных пользователей
+            $users_id = [];
+
+            // Если есть пользователи, соответствующие запросу
+            if($users->count() > 0) {
+                // Перебираем каждого пользователя
+                foreach ($users as $user) {
+                    // Добавляем ID пользователя в массив $users_id
+                    array_push($users_id, $user->id);
+                }
+            }
+
+            // Применяем фильтрацию по совпадению с ID в массиве $users_id
+            $auctions = $auctions->whereIn('user', $users_id);
         }
         if($request->stuff_brand) {
             $auctions = $auctions->where('stuff_brand', '=', $request->stuff_brand);
@@ -553,37 +702,4 @@ class SearchController extends Controller
         return view('auction.search', ['auctions' => $auctions, 'categories' => $categories, 'currentCategory' => $currentCategory, 'request' => $request]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
 }
